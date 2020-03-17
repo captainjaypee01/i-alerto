@@ -2,8 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Alert;
 use App\Models\BackpackUser;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(BackpackUser::class, function (Faker $faker) {
     return [
@@ -15,3 +17,21 @@ $factory->define(BackpackUser::class, function (Faker $faker) {
         'created_at' => $faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now', $timezone = 'Asia/Manila'),
     ];
 });
+
+
+$factory
+    ->state(BackpackUser::class, 'employee', [])
+    ->afterCreatingState(BackpackUser::class, 'employee', function ($user, $faker) {
+        $user->assignRole('employee');
+        
+    });
+
+$factory
+    ->state(BackpackUser::class, 'user', [])
+    ->afterCreatingState(BackpackUser::class, 'user', function ($user, $faker) {
+        $user->assignRole('user');
+        
+        factory(Alert::class, $faker->numberBetween(12,24))->create([
+            'user_id' => $user->id,
+        ]);
+    });

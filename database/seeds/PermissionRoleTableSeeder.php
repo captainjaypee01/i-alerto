@@ -27,7 +27,7 @@ class PermissionRoleTableSeeder extends Seeder
         $employee = Role::create(['name' => 'employee', 'guard_name' => 'backpack']);
 
         // Create Permissions
-        $permissions = ['manage user', 'manage announcement', 'manage alert', 'manage report'];
+        $permissions = ['manage user', 'manage announcement', 'manage alert', 'manage report', 'manage permission', 'manage role'];
 
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission, 'guard_name' => 'backpack']);
