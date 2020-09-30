@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alert;
 use Illuminate\Http\Request;
 
 class AlertController extends Controller
@@ -38,7 +39,26 @@ class AlertController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $alert = Alert::create([
+                'user_id' => $request->user_id,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'address' => $request->address,
+                'type' => $request->type,
+                'status' => 0
+            ]);
+        
+        $response = [];
+
+        if (!$alert) {
+            $response["success"] = false;
+        }
+        else{
+            $response["success"] = true;
+            $response["response"] = $alert;
+        }
+
+        return response()->json($response, 200);
     }
 
     /**
