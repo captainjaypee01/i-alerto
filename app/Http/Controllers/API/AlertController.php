@@ -15,20 +15,20 @@ class AlertController extends Controller
      */
     public function index()
     {
-        // $alert_user = [];
-        // $alert_users_info = [];
+        $alert_user = [];
+        $alert_users_info = [];
 
-        // $alerts = Alert::where("status",0)->orderBy('created_at','desc')->take(15)->get();
-        // foreach ($alerts as $alerts_key => $alerts_value) {
-        //     $alert_users_info["alert_id"] = $alerts_value->id;
-        //     $alert_users_info["name"] = $alerts_value->user->name;
-        //     $alert_users_info["address"] = $alerts_value->address;
-        //     $alert_users_info["created_at"] = $alerts_value->getMobileCreatedAtAttribute();
-        //     $alert_user[] = $alert_users_info;
-        // }
-        // return response()->json([
-        //     'data' => $alert_user,
-        // ], 200);
+        $alerts = Alert::where("status",0)->orderBy('created_at','desc')->take(15)->get();
+        foreach ($alerts as $alerts_key => $alerts_value) {
+            $alert_users_info["alert_id"] = $alerts_value->id;
+            $alert_users_info["name"] = $alerts_value->user->name;
+            $alert_users_info["address"] = $alerts_value->address;
+            $alert_users_info["created_at"] = $alerts_value->getMobileCreatedAtAttribute();
+            $alert_user[] = $alert_users_info;
+        }
+        return response()->json([
+            'data' => $alert_user,
+        ], 200);
     }
 
     /**

@@ -165,6 +165,11 @@ class Alert extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getMobileCreatedAtAttribute()
+    {
+        return $this->created_at->format('M d,Y h:i A');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
