@@ -21,6 +21,7 @@ class CreateAlertsTable extends Migration
             $table->text('address')->nullable();
             $table->string('type')->nullable();
             $table->tinyInteger('status')->nullable();
+            $table->timestamp('responded_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -43,6 +43,9 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
 
     //Alert
     Route::apiResource('alert','AlertController');
+    Route::group(['prefix' => 'alerts'], function () {
+        Route::get('/history', 'AlertController@history');
+    });
 });
 
 

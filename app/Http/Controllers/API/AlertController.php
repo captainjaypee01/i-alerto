@@ -23,9 +23,34 @@ class AlertController extends Controller
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->user->name;
             $alert_users_info["address"] = $alerts_value->address;
+            $alert_users_info['status'] = $alerts_value->status;
             $alert_users_info["created_at"] = $alerts_value->getMobileCreatedAtAttribute();
             $alert_user[] = $alert_users_info;
         }
+
+    
+        
+        return response()->json([
+            'data' => $alert_user,
+        ], 200);
+    }
+
+    public function history()
+    {
+        $alerts = Alert::orderBy('created_at','desc')->take(15)->get();
+        foreach ($alerts as $alerts_key => $alerts_value) {
+            $alert_users_info["id"] = $alerts_value->id;
+            $alert_users_info["alert_user_name"] = $alerts_value->user->name;
+            $alert_users_info["address"] = $alerts_value->address;
+            $alert_users_info['type'] = $alerts_value->type;
+            $alert_users_info['status'] = $alerts_value->status;
+            $alert_users_info["created_at"] = $alerts_value->getMobileCreatedAtAttribute();
+            $alert_users_info["responded_at"] = $alerts_value->getMobileRespondedAtAttribute();
+            $alert_user[] = $alert_users_info;
+        }
+
+    
+        
         return response()->json([
             'data' => $alert_user,
         ], 200);
@@ -56,6 +81,33 @@ class AlertController extends Controller
         else{
             $response["success"] = true;
             $response["response"] = $alert;
+
+
+
+            $url ="https://fcm.googleapis.com/fcm/send";
+            $fields=array(
+                "to"=>"/topics/alert",
+                "data" => array(
+                    "body" => $request->address,
+                    "title" => "Alert",
+                    "from_activity" => "alert_notif",
+                ),
+            );
+
+            $headers=array(
+                'Authorization: key=AAAAvF1qE-A:APA91bHFsBPdURKVGuqE3IZB7Ztw5REJaRZQl7mpb1lrDuUM0YyYnWHEiZeJpgzKBT0YM4NoAzaznKQE5RnlsB9HdmrjasLRj0HvqGpqwknSOS7eRIg67PyLAbWTAO3RAAeeaTPob2EM',
+                'Content-Type:application/json'
+            );
+
+            $ch=curl_init();
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($fields));
+            $result=curl_exec($ch);
+            // echo $result;
+            curl_close($ch);
         }
 
         return response()->json($response, 200);

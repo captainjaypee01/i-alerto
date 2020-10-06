@@ -93,6 +93,31 @@ class AnnouncementCrudController extends CrudController
         $item = $this->crud->create($this->crud->getStrippedSaveRequest());
         $this->data['entry'] = $this->crud->entry = $item;
 
+        $url ="https://fcm.googleapis.com/fcm/send";
+        $fields=array(
+            "to"=>"/topics/announcement",
+            "data" => array(
+                "body" => $item->details,
+                "title" => "Announcement",
+                "from_activity" => "announcement_notif",
+            ),
+        );
+
+        $headers=array(
+            'Authorization: key=AAAAvF1qE-A:APA91bHFsBPdURKVGuqE3IZB7Ztw5REJaRZQl7mpb1lrDuUM0YyYnWHEiZeJpgzKBT0YM4NoAzaznKQE5RnlsB9HdmrjasLRj0HvqGpqwknSOS7eRIg67PyLAbWTAO3RAAeeaTPob2EM',
+            'Content-Type:application/json'
+        );
+
+        $ch=curl_init();
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($fields));
+        $result=curl_exec($ch);
+        // echo $result;
+        curl_close($ch);
+
         // show a success message
         \Alert::success(trans('backpack::crud.insert_success'))->flash();
 

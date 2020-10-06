@@ -21,7 +21,7 @@ class Alert extends Model
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['responded_at','created_at', 'updated_at'];
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +168,11 @@ class Alert extends Model
     public function getMobileCreatedAtAttribute()
     {
         return $this->created_at->format('M d,Y h:i A');
+    }
+
+    public function getMobileRespondedAtAttribute()
+    {
+        return $this->responded_at != null ? $this->responded_at->format('M d,Y h:i A') : "N/A";
     }
 
     /*
