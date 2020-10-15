@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Alert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AlertController extends Controller
 {
@@ -22,7 +23,10 @@ class AlertController extends Controller
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->user->name;
+            $alert_users_info["latitude"] = $alerts_value->latitude;
+            $alert_users_info["longitude"] = $alerts_value->longitude;
             $alert_users_info["address"] = $alerts_value->address;
+            $alert_users_info["type"] = $alerts_value->type;
             $alert_users_info['status'] = $alerts_value->status;
             $alert_users_info["created_at"] = $alerts_value->getMobileCreatedAtAttribute();
             $alert_user[] = $alert_users_info;
@@ -41,6 +45,8 @@ class AlertController extends Controller
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["id"] = $alerts_value->id;
             $alert_users_info["alert_user_name"] = $alerts_value->user->name;
+            $alert_users_info["latitude"] = $alerts_value->latitude;
+            $alert_users_info["longitude"] = $alerts_value->longitude;
             $alert_users_info["address"] = $alerts_value->address;
             $alert_users_info['type'] = $alerts_value->type;
             $alert_users_info['status'] = $alerts_value->status;
@@ -133,7 +139,21 @@ class AlertController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'status' => ['required']
+        ];
+
+        $response = array('success' => false);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['response'] = $validator->messages();
+        } else {
+            $alert = Alert::with('user')->get()->find($id);
+            $alert->fill($request->all())->save();
+            $response["success"] = true;
+            $response['response'] = $alert;
+        }
+        return response()->json($response, 200);
     }
 
     /**

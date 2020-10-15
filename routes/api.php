@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
-	Route::apiResource('alert', 'AlertController');
-});
-
 
 Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
     // Announcement
