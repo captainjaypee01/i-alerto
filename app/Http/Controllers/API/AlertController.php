@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alert;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -149,7 +150,8 @@ class AlertController extends Controller
             $response['response'] = $validator->messages();
         } else {
             $alert = Alert::with('user')->get()->find($id);
-            $alert->fill($request->all())->save();
+            // $alert->fill($request->all())->save();
+            $alert->update(["status" => $request->status,"responded_at" => Carbon::now()]);
             $response["success"] = true;
             $response['response'] = $alert;
         }
