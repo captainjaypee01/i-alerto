@@ -12,6 +12,7 @@
         "backpack/crud": "4.0.*",
         "backpack/permissionmanager": "^5.0",
         "barryvdh/laravel-elfinder": "^0.4.5",
+        "beyondcode/laravel-websockets": "^1.9",
         "consoletvs/charts": "6.*",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
