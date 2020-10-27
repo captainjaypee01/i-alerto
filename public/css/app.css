@@ -1,1 +1,263 @@
-.login-page .welcome-banner{position:relative;z-index:1000;background-image:url(https://c4.wallpaperflare.com/wallpaper/583/992/885/artwork-digital-art-science-fiction-apocalyptic-wallpaper-preview.jpg);background-position:50%;background-size:cover;background-repeat:no-repeat}.login-page .overlay:before{position:absolute;content:" ";top:0;left:0;width:100%;height:100%;display:block;z-index:0;background-color:rgba(255,0,0,.5)}.login-page .surface{position:relative;z-index:1001;display:flex;flex-direction:column;align-items:center}.login-page .brand-logo{margin-bottom:2px;margin-left:-36px;width:350px}.login-page .feature-list{list-style-type:none;color:#fff}.login-page .feature-item{margin-bottom:15px;text-align:center}.login-page .form-wrapper{padding:0 100px}.login-page .sub-text{color:#fff;text-align:center}.login-page .card{width:100%}.custom-container{max-width:100%;height:100vh}.custom-row{height:100vh}.padding-y-100{padding:0 100px}a{color:#b00}.secondary-input{display:none}.dropdown-item.active,.dropdown-item:active{background:#b00}.dataTables_wrapper .row.mt-2{display:flex;justify-content:space-between}.dataTables_wrapper .row.mt-2 .col-sm-2.text-center{text-align:left!important}.dataTables_wrapper .row .dataTables_paginate.paging_simple_numbers .pagination .page-item.active .page-link{background:#b00;border-color:#b00}.search-section{display:flex;justify-content:space-between}.input-container{flex:0 0 85%}.hidden-print{flex:0 0 15%}.hidden-print .btn.btn-primary{width:100%;background:#b00;border:1px solid #b00}.hidden-print .btn.btn-primary:hover{color:#b00!important;background:transparent}.dataTables_filter{text-align:left}.dataTables_filter input{border-radius:.25rem}.dataTables_filter input,.dataTables_filter label{width:96%}.btn-link{color:#b00}.btn-link:hover{scale:.5;transition:all .5s ease-in-out}td p{margin:0}.badge.bs{background-color:#4ebd75}.message{padding:7px;width:50%;border-radius:10px}.message.inbound{background:#add8e6}.message.outbound{margin-left:auto;background:#ffb6c1}.message .message-text{margin-bottom:0;font-size:14px}.message-time{font-size:14px}.message-time.out{display:flex;justify-content:flex-end}.message-holder{max-height:693px}.message-holder .card-body{overflow:auto}.chart-wrapper canvas{height:100%}.nav-tabs .nav-link{margin-right:15px;margin-bottom:10px;color:#000;text-transform:uppercase;background:#e5e5e5;border:1px solid transparent;border-radius:3px;transition:all .3s ease-in-out}.nav-tabs .nav-link.active,.nav-tabs .nav-link.active:focus{color:#fff;background:#b00;border-bottom:1px solid #b00}.nav-tabs .nav-link:hover{color:#fff;background:#b00}#saveActions{margin-top:15px}.Embed{overflow:hidden}.clock{text-align:center;color:#000;font-size:14px;letter-spacing:2px}.timer-toggler{padding:8px;border-radius:50%}.timer-icon{width:30px}.timer{transform:translateX(0)}.timer,.timer.hide-timer{transition:all .5s ease-in-out}.timer.hide-timer{transform:translateX(105%)}.time-holder{position:absolute!important;bottom:10px}
+.login-page .welcome-banner {
+  position: relative;
+  z-index: 1000;
+  background-image: url("https://c4.wallpaperflare.com/wallpaper/583/992/885/artwork-digital-art-science-fiction-apocalyptic-wallpaper-preview.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.login-page .overlay:before {
+  position: absolute;
+  content: " ";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.login-page .surface {
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-page .brand-logo {
+  margin-bottom: 2px;
+  margin-left: -36px;
+  width: 350px;
+}
+
+.login-page .feature-list {
+  list-style-type: none;
+  color: #fff;
+}
+
+.login-page .feature-item {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.login-page .form-wrapper {
+  padding: 0 100px;
+}
+
+.login-page .sub-text {
+  color: #fff;
+  text-align: center;
+}
+
+.login-page .card {
+  width: 100%;
+}
+
+.custom-container {
+  max-width: 100%;
+  height: 100vh;
+}
+
+.custom-row {
+  height: 100vh;
+}
+
+.padding-y-100 {
+  padding: 0 100px;
+}
+
+a {
+  color: #b00;
+}
+
+.secondary-input {
+  display: none;
+}
+
+.dropdown-item:active {
+  background: #b00;
+}
+
+.dropdown-item.active {
+  background: #b00;
+}
+
+.dataTables_wrapper .row.mt-2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dataTables_wrapper .row.mt-2 .col-sm-2.text-center {
+  text-align: left !important;
+}
+
+.dataTables_wrapper .row .dataTables_paginate.paging_simple_numbers .pagination .page-item.active .page-link {
+  background: #b00;
+  border-color: #b00;
+}
+
+.search-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-container {
+  flex: 0 0 85%;
+}
+
+.hidden-print {
+  flex: 0 0 15%;
+}
+
+.hidden-print .btn.btn-primary {
+  width: 100%;
+  background: #b00;
+  border: 1px solid #b00;
+}
+
+.hidden-print .btn.btn-primary:hover {
+  color: #b00 !important;
+  background: transparent;
+}
+
+.dataTables_filter {
+  text-align: left;
+}
+
+.dataTables_filter input {
+  border-radius: 0.25rem;
+}
+
+.dataTables_filter label,
+.dataTables_filter input {
+  width: 96%;
+}
+
+.btn-link {
+  color: #b00;
+}
+
+.btn-link:hover {
+  scale: 0.5;
+  transition: all 0.5s ease-in-out;
+}
+
+td p {
+  margin: 0;
+}
+
+.badge.bs {
+  background-color: #4EBD75;
+}
+
+.message {
+  padding: 7px;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.message.inbound {
+  background: lightblue;
+}
+
+.message.outbound {
+  margin-left: auto;
+  background: lightpink;
+}
+
+.message .message-text {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.message-time {
+  font-size: 14px;
+}
+
+.message-time.out {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.message-holder {
+  max-height: 693px;
+}
+
+.message-holder .card-body {
+  overflow: auto;
+}
+
+.chart-wrapper canvas {
+  height: 100%;
+}
+
+.nav-tabs .nav-link {
+  margin-right: 15px;
+  margin-bottom: 10px;
+  color: black;
+  text-transform: uppercase;
+  background: #e5e5e5;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background: #b00;
+  border-bottom: 1px solid #b00;
+}
+
+.nav-tabs .nav-link.active:focus {
+  color: #fff;
+  background: #b00;
+  border-bottom: 1px solid #b00;
+}
+
+.nav-tabs .nav-link:hover {
+  color: white;
+  background: #b00;
+}
+
+#saveActions {
+  margin-top: 15px;
+}
+
+.Embed {
+  overflow: hidden;
+}
+
+.clock {
+  text-align: center;
+  color: #000;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.timer-toggler {
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.timer-icon {
+  width: 30px;
+}
+
+.timer {
+  transform: translateX(0);
+  transition: all 0.5s ease-in-out;
+}
+
+.timer.hide-timer {
+  transform: translateX(105%);
+  transition: all 0.5s ease-in-out;
+}
+
+.time-holder {
+  position: absolute !important;
+  bottom: 10px;
+}
+
