@@ -19,7 +19,12 @@ Route::group([
     Route::group(['prefix' => 'report' , 'as' => 'report.'], function(){
         Route::get('/generate', 'Report\GenerateReportController@index')->name('generate');
         Route::get('/weekly', 'Report\WeeklyAlertReportController@index')->name('weekly');
+        Route::get('/monthly', 'Report\MonthlyReportController@index')->name('monthly');
         Route::get('/export/alert', 'Report\GenerateReportController@exportAlert')->name('export.alert');
     });
     
+    Route::crud('resident', 'ResidentCrudController');
+    Route::crud('barangay', 'BarangayCrudController');
+    Route::crud('relative', 'RelativeCrudController');
+    Route::crud('employee', 'EmployeeCrudController');
 }); // this should be the absolute last line of this file

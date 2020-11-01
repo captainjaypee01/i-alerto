@@ -35,4 +35,17 @@ class BackpackUser extends User
     {
         return $this->email;
     }
+
+    public function barangay(){
+        return $this->hasOne(Barangay::class);
+    }
+    
+    public function employee(){
+        return $this->hasOne(Employee::class);
+    }
+    
+    public function resident(){
+        return $this->hasOne(Resident::class);
+    }
+    
 }
