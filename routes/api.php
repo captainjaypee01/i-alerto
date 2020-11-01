@@ -32,6 +32,11 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
     //Register
     Route::apiResource('register', 'RegisterController');
 
+    Route::group(['prefix' => 'register/store'], function () {
+        Route::post('/check_first', 'RegisterController@check_first');
+        Route::post('/sample_image','RegisterController@sample_image');
+    });
+
     Route::group(['prefix' => 'update'], function () {
         Route::post('/edit/{id}', 'RegisterController@update');
         Route::post('/change_password/{id}', 'RegisterController@change_password');
