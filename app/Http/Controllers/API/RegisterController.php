@@ -191,49 +191,4 @@ class RegisterController extends Controller
         return response()->json($response, 200);
     }
 
-    public function sample_image(Request $request)
-    {   
-        $rules = [
-            'name' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'contact_number' => ['required', 'string','digits:11', 'unique:users'],
-        ];
-
-        $response = array('success' => false);
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            $response['response'] = $validator->messages();
-        } else {
-            $folder = str_replace(' ', '', strtolower($request->name))."-".$request->date_of_birth;
-
-            $left_index_fingerprint_image = "left_index_finger.jpg";
-            $uploaded1 = $request->left_index_fingerprint->move(public_path("/fingerprint/$folder"), $left_index_fingerprint_image);
-
-            $right_index_fingerprint_image = "right_index_finger.jpg";
-            $uploaded2 = $request->right_index_fingerprint->move(public_path("/fingerprint/$folder"), $right_index_fingerprint_image);
-        
-            if($uploaded1 && $uploaded2){
-                $user = BackpackUser::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'contact_number' => $request->contact_number,
-                    'address' => $request->address,
-                    'date_of_birth' => Carbon::createFromTimestampMs($request->date_of_birth)->format('Y-m-d'),
-                    'health_concern' => $request->health_concern,
-                    'pwd' => $request->pwd,
-                    'senior_citizen' => $request->senior,
-                    'fingerprint' => $folder,
-                    'password' => Hash::make($request->password),
-                ])->assignRole("user");
-
-                $role = $user->roles;
-                $role = $role[0];
-
-                $response["success"] = true;
-                $response['response'] = $user;
-                $response["role"] = $role->name;
-            }
-        }
-        return response()->json($response, 200);
-    }
 }
