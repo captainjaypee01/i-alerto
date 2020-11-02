@@ -6,6 +6,15 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('alert') }}'><i class='nav-icon fa fa-bell'></i> Alerts</a></li>
 
 <li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-bar-chart"></i> Reports</a>
+    <ul class="nav-dropdown-items">
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('report/weekly') }}"><i class="nav-icon fa fa-user"></i> <span>Weekly Report</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('report/monthly') }}"><i class="nav-icon fa fa-group"></i> <span>Monthly Report</span></a></li> 
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('report/generate') }}"><i class="nav-icon fa fa-group"></i> <span>Generate Report</span></a></li> 
+    </ul>
+</li>
+
+<li class="nav-item nav-dropdown">
   <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> Users</a>
   <ul class="nav-dropdown-items">
     <li class='nav-item'><a class='nav-link' href='{{ backpack_url('resident') }}'><i class='nav-icon fa fa-question'></i> Residents</a></li>
@@ -25,15 +34,6 @@
 	</ul>
 </li>
 
-<li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-bar-chart"></i> Reports</a>
-    <ul class="nav-dropdown-items">
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('report/weekly') }}"><i class="nav-icon fa fa-user"></i> <span>Weekly Report</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('report/monthly') }}"><i class="nav-icon fa fa-group"></i> <span>Monthly Report</span></a></li> 
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('report/generate') }}"><i class="nav-icon fa fa-group"></i> <span>Generate Report</span></a></li> 
-    </ul>
-</li>
 
-
-
-<li class=nav-item><a class=nav-link href="{{ backpack_url('elfinder') }}"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li>
+<!-- <li class=nav-item><a class=nav-link href="{{ backpack_url('elfinder') }}"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li> -->
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon fa fa-terminal'></i> Logs</a></li>
