@@ -144,6 +144,14 @@ class Alert extends Model
 
     }
     
+    public function getDisasterTypeAttribute(){
+        if($this->type == 'accident'){
+            return '<span class="text-capitalize">'. $this->accident_type . ' ' . $this->type .'</span>';
+        }
+        
+        return '<span class="text-capitalize">'. $this->type .'</span>';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

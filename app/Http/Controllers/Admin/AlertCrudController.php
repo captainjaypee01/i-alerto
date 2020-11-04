@@ -51,7 +51,9 @@ class AlertCrudController extends CrudController
             [
                 'name' => 'type',
                 'label' => "Type of Disaster",
-                'type' => 'text',
+                'type' => 'model_function',
+                'limit' => 150,
+                'function_name' => 'getDisasterTypeAttribute',
             ],
             [
                 'name' => 'longitude',

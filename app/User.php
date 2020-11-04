@@ -13,6 +13,7 @@ class User extends Authenticatable
     use Notifiable;
     use CrudTrait; // <----- this
     use HasRoles; // <------ and this
+    use \Parental\HasChildren;
 
     /**
      * The attributes that are mass assignable.
@@ -44,5 +45,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'date_of_birth' => 'date'
     ];
+
+    
+    public function barangay(){
+        return $this->hasOne(Barangay::class);
+    }
+    
+    public function employee(){
+        return $this->hasOne(Employee::class);
+    }
+    
+    public function resident(){
+        return $this->hasOne(Resident::class);
+    }
+    
 
 }

@@ -20,6 +20,7 @@ class CreateAlertsTable extends Migration
             $table->double('longitude')->nullable();
             $table->text('address')->nullable();
             $table->string('type')->nullable();
+            $table->string('accident_type')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->timestamp('responded_at')->nullable();
             $table->timestamps();
