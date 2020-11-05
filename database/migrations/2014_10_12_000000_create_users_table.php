@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('pwd')->default(false);
             $table->boolean('senior_citizen')->default(false);
             $table->string('password');
+            $table->string('type');
             $table->text('fingerprint');
             $table->rememberToken();
             $table->timestamps();

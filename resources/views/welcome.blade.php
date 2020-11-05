@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Styles -->
         <style>
@@ -96,5 +97,12 @@
                 </div>
             </div>
         </div>
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script>
+            Echo.channel('chat-channel')
+                .listen('ChatEvent' , (chats) => {
+                    console.log(chats.message);
+                });
+        </script>
     </body>
 </html>

@@ -15,13 +15,13 @@
 		}
 	},
 	"devMode": true,
-	"host": null,
+	"host": "ialerto.com",
 	"port": "6001",
 	"protocol": "https",
 	"socketio": {},
 	"secureOptions": 67108864,
-	"sslCertPath": "/etc/letsencrypt/live/ialerto.com/cert.pem",
-	"sslKeyPath": "/etc/letsencrypt/live/ialerto.com/privkey.pem",
+	"sslCertPath": "/etc/letsencrypt/archive/ialerto.com/cert1.pem",
+	"sslKeyPath": "/etc/letsencrypt/archive/ialerto.com//privkey1.pem",
 	"sslCertChainPath": "",
 	"sslPassphrase": "",
 	"subscribers": {
