@@ -51,9 +51,9 @@ class Alert extends Model
         $respond = $this->status;
         $btnHtml = '';
         if($respond == 0)
-            $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond btn-link text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond"><span class="fa fa-reply"></span></a>';
+            $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message . '</a>';
         else
-            $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond btn-link text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond"><span class="fa fa-times"></span></a>';
+            $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message .'</a>';
 
 
         $script = '
@@ -141,7 +141,7 @@ class Alert extends Model
 
         </script>';
 
-        return $btnHtml . '<br>' . $this->status_message .  $script;
+        return $btnHtml . '<br>' .  $script;
 
     }
 
@@ -153,6 +153,9 @@ class Alert extends Model
         return '<span class="text-capitalize">'. $this->type .'</span>';
     }
 
+    public function getCreatedDateFormatAttribute(){
+        return $this->created_at->format('F, d Y');
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

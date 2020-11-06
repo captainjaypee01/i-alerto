@@ -1,8 +1,8 @@
 @extends(backpack_view('blank'))
 
 @php
-    $date = new Carbon\Carbon();
-    $date->setISODate($year, $month);
+    $date = \Carbon\Carbon::createFromDate($year, $month, 1);
+    // $date->setISODate($year, $month);
     $i=0;
     $j=0;
 @endphp
@@ -44,9 +44,109 @@
     <div class="row">
         {!! $chart->container() !!}
     </div>
+
+    <!-- Fire Chart -->
+    <div class="row">
+
+        <div class="col col-md-12">
+            <div class="card">
+
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Alerts for Fire</h4>
+                    <div class="small text-muted"><strong>Month of {{ $date->format('F') }} in {{ $year}} </strong></div>
+                </div>
+                <div class="card-body">
+                    {!! $fireChart->container() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flood Chart -->
+    <div class="row">
+
+        <div class="col col-md-12">
+            <div class="card">
+
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Alerts for Flood</h4>
+                    <div class="small text-muted"><strong>Month of {{ $date->format('F') }} in {{ $year}} </strong></div>
+                </div>
+                <div class="card-body">
+                    {!! $floodChart->container() !!}
+                </div>
+            </div>
+        </div>
+    </div>
     <hr>
-    
-    
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Responded Alerts</h4>
+                    <div class="small text-muted"><strong>Month of {{ $date->format('F') }} in {{ $year}} </strong> - <strong>Total: </strong>{{ $responded->count() }}</div>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Address</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($responded as $respond)
+                            <tr>
+                                <td>{!! $respond->disaster_type !!}</td>
+                                <td>{{ $respond->address }} </td>
+                                <td>{{ $respond->latitude }} </td>
+                                <td>{{ $respond->longitude }} </td>
+                                <td>{{ $respond->created_date_format }} </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">No Responded Alerts</h4>
+                    <div class="small text-muted"><strong>Month of {{ $date->format('F') }} in {{ $year}} </strong>  - <strong>Total: </strong>{{ $no_responded->count() }}</div>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Address</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($no_responded as $respond)
+                            <tr>
+                                <td>{{ $respond->type }}</td>
+                                <td>{{ $respond->address }} </td>
+                                <td>{{ $respond->latitude }} </td>
+                                <td>{{ $respond->longitude }} </td>
+                                <td>{{ $respond->created_date_format }} </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <div class="container-fluid">
 </div>
@@ -83,15 +183,15 @@
     @stack('crud_list_scripts')
 
     <script>
-        
+
         $('#month_select').daterangepicker({
-            
+
             singleDatePicker: true,
             showDropdowns: true,
             startDate: moment().month( {{ ($month - 1) }} ).format('MM-DD-YYYY'),
-            maxDate: moment(),      
+            maxDate: moment(),
             format: 'MM-DD-YYYY'
-            
+
         }, function(start, end, label) {
             var month = start.month() + 1;
             console.log(month);
@@ -100,5 +200,7 @@
         });
     </script>
     {!! $chart->script() !!}
+    {!! $fireChart->script() !!}
+    {!! $floodChart->script() !!}
 @endsection
 
