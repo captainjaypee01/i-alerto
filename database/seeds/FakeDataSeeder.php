@@ -15,7 +15,8 @@ class FakeDataSeeder extends Seeder
     public function run()
     {
         factory(Announcement::class, 30)->create();
-        factory(BackpackUser::class, 30)->states('employee')->create();
-        factory(BackpackUser::class, 300)->states('user')->create();
+        factory(BackpackUser::class, 20)->states('employee')->create();
+        factory(BackpackUser::class, 30)->states('barangay')->create();
+        factory(BackpackUser::class, 200)->states('resident')->create();
     }
 }

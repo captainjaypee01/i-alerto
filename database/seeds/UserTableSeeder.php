@@ -21,27 +21,47 @@ class UserTableSeeder extends Seeder
 
         // Add the master administrator, user id of 1
         User::create([
-            'name'              => 'Admin Istrator',
+            'first_name'              => 'Admin Istrator',
+            'middle_name'              => 'A',
+            'last_name'              => 'Istrator',
             'email'             => 'admin@admin.com',
             'contact_number'    => '09123456789',
-            'date_of_birth'     => now(),
+            'birthdate'     => now(),
             'password'          => Hash::make('secret'),
-        ]);
-        
-        User::create([
-            'name'              => 'Employee Employee',
-            'email'             => 'employee@employee.com',
-            'contact_number'    => '09123456788',
-            'date_of_birth'     => now(),
-            'password'          => Hash::make('secret'),
+            'address'           => 'Sample Address',
         ]);
 
         User::create([
-            'name'              => 'Default User',
-            'email'             => 'user@user.com',
-            'contact_number'    => '09123456787',
-            'date_of_birth'     => now(),
+            'first_name'              => 'One',
+            'middle_name'              => 'E',
+            'last_name'              => 'Employee',
+            'email'             => 'one@employee.com',
+            'contact_number'    => '09123321788',
+            'birthdate'     => now(),
             'password'          => Hash::make('secret'),
+            'address'           => 'Sample Address',
+        ]);
+
+        User::create([
+            'first_name'              => 'One',
+            'middle_name'              => 'R',
+            'last_name'              => 'Resident',
+            'email'             => 'one@resident.com',
+            'contact_number'    => '09123450987',
+            'birthdate'     => now(),
+            'password'          => Hash::make('secret'),
+            'address'           => 'Sample Address',
+        ]);
+
+        User::create([
+            'first_name'              => 'One',
+            'middle_name'              => 'b',
+            'last_name'              => 'Barangay',
+            'email'             => 'one@barangay.com',
+            'contact_number'    => '09156756787',
+            'birthdate'     => now(),
+            'password'          => Hash::make('secret'),
+            'address'           => 'Sample Address',
         ]);
 
         $this->enableForeignKeys();

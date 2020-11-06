@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email','contact_number','address','health_concern','pwd','senior_citizen','fingerprint','password','date_of_birth',
+        'first_name', 'middle_name','last_name','email','contact_number','address','health_concern','pwd','senior_citizen','fingerprint','password','date_of_birth',
     ];
 
 
@@ -46,18 +46,18 @@ class User extends Authenticatable
         'date_of_birth' => 'date'
     ];
 
-    
+
     public function barangay(){
         return $this->hasOne(Barangay::class);
     }
-    
+
     public function employee(){
         return $this->hasOne(Employee::class);
     }
-    
+
     public function resident(){
         return $this->hasOne(Resident::class);
     }
-    
+
 
 }

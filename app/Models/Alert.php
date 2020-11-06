@@ -52,15 +52,15 @@ class Alert extends Model
         $btnHtml = '';
         if($respond == 0)
             $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond btn-link text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond"><span class="fa fa-reply"></span></a>';
-        else 
+        else
             $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond btn-link text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond"><span class="fa fa-times"></span></a>';
-        
+
 
         $script = '
         <script>
             if (typeof respondEntry != \'function\') {
                 $("[data-button-type=respond]").unbind(\'click\');
-        
+
                 function respondEntry(button) {
                 // ask for confirmation before deleting an item
                 // e.preventDefault();
@@ -68,7 +68,7 @@ class Alert extends Model
                 var route = button.attr(\'data-route\');
                 var status = button.attr(\'data-status\') == 1 ? "Not Responded" : "Responded";
                 var row = $("#crudTable a[data-route=\'"+route+"\']").closest(\'tr\');
-                
+
                 swal({
                     title: "Warning",
                     text: "Are you sure you want to change the status to \"" + status + "\"?",
@@ -112,16 +112,17 @@ class Alert extends Model
                                             timer: 4000,
                                             buttons: false,
                                         });
-            
+
                                         // Hide the modal, if any
                                         $(\'.modal\').modal(\'hide\');
 
                                         $("#crudTable").DataTable().ajax.reload();
-            
+
                                     }
                                 },
                                 error: function(result) {
                                     // Show an alert with the result
+                                    console.log(result);
                                     swal({
                                         title: "NOT updated",
                                         text: "There\'s been an error. Your item might not have been updated.",
@@ -133,22 +134,22 @@ class Alert extends Model
                             });
                         }
                     });
-        
+
                 }
             }
-        
-  
+
+
         </script>';
-        
+
         return $btnHtml . '<br>' . $this->status_message .  $script;
 
     }
-    
+
     public function getDisasterTypeAttribute(){
         if($this->type == 'accident'){
             return '<span class="text-capitalize">'. $this->accident_type . ' ' . $this->type .'</span>';
         }
-        
+
         return '<span class="text-capitalize">'. $this->type .'</span>';
     }
 
