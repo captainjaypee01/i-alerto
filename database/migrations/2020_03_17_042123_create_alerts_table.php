@@ -25,6 +25,8 @@ class CreateAlertsTable extends Migration
             $table->timestamp('responded_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -41,34 +41,51 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
-            $folder = str_replace(' ', '', strtolower($request->name))."-".$request->date_of_birth;
+            if ($request->has("left_index_fingerprint") && $request->has("right_index_fingerprint")) {
+                $folder = str_replace(' ', '', strtolower($request->name))."-".$request->birthdate;
+                $left_index_fingerprint_image = "left_index_finger.jpg";
+                $uploaded1 = $request->left_index_fingerprint->move(public_path("/fingerprint/$folder"), $left_index_fingerprint_image);
 
-            $left_index_fingerprint_image = "left_index_finger.jpg";
-            $uploaded1 = $request->left_index_fingerprint->move(public_path("/fingerprint/$folder"), $left_index_fingerprint_image);
-
-            $right_index_fingerprint_image = "right_index_finger.jpg";
-            $uploaded2 = $request->right_index_fingerprint->move(public_path("/fingerprint/$folder"), $right_index_fingerprint_image);
-        
-            if($uploaded1 && $uploaded2){
-                $user = BackpackUser::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'contact_number' => $request->contact_number,
-                    'address' => $request->address,
-                    'date_of_birth' => Carbon::createFromTimestampMs($request->date_of_birth)->format('Y-m-d'),
-                    'health_concern' => $request->health_concern,
-                    'pwd' => $request->pwd,
-                    'senior_citizen' => $request->senior,
-                    'fingerprint' => $folder,
-                    'password' => Hash::make($request->password),
-                ])->assignRole("user");
-
-                $role = $user->roles;
-                $role = $role[0];
-
-                $response["success"] = true;
-                $response['response'] = $user;
-                $response["role"] = $role->name;
+                $right_index_fingerprint_image = "right_index_finger.jpg";
+                $uploaded2 = $request->right_index_fingerprint->move(public_path("/fingerprint/$folder"), $right_index_fingerprint_image);
+                if($uploaded1 && $uploaded2){
+                    $name = $request->first_name." ".$request->middle_name." ".$request->last_name;
+                    $user = BackpackUser::create([
+                        'name' => $name,
+                        'email' => $request->email,
+                        'contact_number' => $request->contact_number,
+                        'password' => Hash::make($request->password),
+                    ])->assignRole("user");
+    
+                    $resident = $user->resident()->create([
+                        'first_name' => $request->first_name,
+                        'middle_name' => $request->middle_name,
+                        'last_name' => $request->last_name,
+                        'address' => $request->address,
+                        'birthdate' => Carbon::createFromTimestampMs($request->birthdate)->format('Y-m-d'),
+                        'health_concern' => $request->health_concern,
+                        'pwd' => $request->pwd,
+                        'senior_citizen' => $request->senior,
+                        'fingerprint' => $folder,
+                    ]);
+                    
+                    $role = $user->roles;
+                    $role = $role[0];
+                    
+                    unset($user['roles']);
+    
+                    $res = [
+                        "user" => $user,
+                        "resident" => $resident
+                    ];
+    
+                    $response["success"] = true;
+                    $response['response'] = $res;
+                    $response["role"] = $role->name;
+                }
+            }
+            else{
+                $response["response"] = "No Fingerprint";
             }
         }
         return response()->json($response, 200);
@@ -77,13 +94,15 @@ class RegisterController extends Controller
     public function check_first(Request $request)
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'contact_number' => ['required', 'string','digits:11', 'unique:users'],
             'address' => ['required', 'string','max:255'],
             'pwd' => ['boolean'],
             'senior' => ['boolean'],
-            'date_of_birth' => ['required', 'string'],
+            'birthdate' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
 
