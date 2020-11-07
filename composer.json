@@ -10,7 +10,16 @@
     "require": {
         "php": "^7.2",
         "backpack/crud": "4.1.*",
+<<<<<<< HEAD
         "backpack/permissionmanager": "^6.0.0",
+=======
+
+        "backpack/permissionmanager": "^6.0.0",
+
+        "backpack/logmanager": "^4.0",
+        "backpack/permissionmanager": "^6.0",
+
+>>>>>>> 1c570e7e89042441b3851e51526ca2aee07cde3b
         "barryvdh/laravel-elfinder": "^0.4.5",
         "calebporzio/parental": "^0.11.0",
         "consoletvs/charts": "6.*",
