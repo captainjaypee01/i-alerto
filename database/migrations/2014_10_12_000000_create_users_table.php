@@ -20,9 +20,16 @@ class CreateUsersTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->string('contact_number')->unique();
+            $table->date('birthdate');
+            $table->text('address');
+            $table->text('health_concern')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('pwd')->default(false);
+            $table->boolean('senior_citizen')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('type');
+            $table->text('fingerprint');
             $table->rememberToken();
             $table->timestamps();
         });
