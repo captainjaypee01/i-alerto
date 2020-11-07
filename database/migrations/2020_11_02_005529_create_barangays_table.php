@@ -15,12 +15,12 @@ class CreateBarangaysTable extends Migration
     {
         Schema::create('barangays', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('first_name');
-            $table->string('middle_name');
-            $table->string('last_name');
-            $table->date('birthdate');
-            $table->text('address');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->date('birthdate')->nullable();
+            $table->text('address')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

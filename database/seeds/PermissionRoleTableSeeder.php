@@ -23,11 +23,13 @@ class PermissionRoleTableSeeder extends Seeder
 
         // Create Roles
         $admin = Role::create(['name' => 'administrator', 'guard_name' => 'backpack']);
-        $user = Role::create(['name' => 'user', 'guard_name' => 'backpack']);
         $employee = Role::create(['name' => 'employee', 'guard_name' => 'backpack']);
+        $resident = Role::create(['name' => 'resident', 'guard_name' => 'backpack']);
+        $barangay = Role::create(['name' => 'barangay', 'guard_name' => 'backpack']);
+        $relative = Role::create(['name' => 'relative', 'guard_name' => 'backpack']);
 
         // Create Permissions
-        $permissions = ['manage user', 'manage announcement', 'manage alert', 'manage report', 'manage permission', 'manage role'];
+        $permissions = ['manage user', 'manage announcement', 'manage alert', 'manage report', 'manage permission', 'manage evacuation','manage role', 'manage resident', 'manage barangay', 'manage relative', 'manage employee'];
 
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission, 'guard_name' => 'backpack']);
@@ -35,9 +37,10 @@ class PermissionRoleTableSeeder extends Seeder
 
         // ALWAYS GIVE ADMIN ROLE ALL PERMISSIONS
         $admin->givePermissionTo(Permission::all());
-        $employee->givePermissionTo(['manage announcement', 'manage report', 'manage alert']);
-        $user->givePermissionTo(['manage alert']);
- 
+        $employee->givePermissionTo(['manage announcement', 'manage report', 'manage alert', 'manage employee', 'manage evacuation', 'manage resident']);
+        $resident->givePermissionTo(['manage alert']);
+        $barangay->givePermissionTo(['manage evacuation', 'manage report','manage alert']);
+
         $this->enableForeignKeys();
     }
 }
