@@ -187,6 +187,14 @@ class Alert extends Model
         return $this->responded_at != null ? $this->responded_at->format('M d,Y h:i A') : "N/A";
     }
 
+    public function getNameAttribute()
+    {
+        $name = $this->user->first_name." ".$this->user->middle_name." ".$this->user->last_name;
+        $name = str_replace(" "," ",$name);
+        $name = trim($name);
+        return $name;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

@@ -60,4 +60,19 @@ class User extends Authenticatable
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESSORS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getNameAttribute()
+    {
+        $name = $this->first_name." ".$this->middle_name." ".$this->last_name;
+        $name = str_replace(" "," ",$name);
+        $name = trim($name);
+        return $name;
+    }
+
+
 }

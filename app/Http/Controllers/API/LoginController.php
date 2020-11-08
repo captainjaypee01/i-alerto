@@ -20,6 +20,7 @@ class LoginController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $role = $user->roles;
                 $role = $role[0];
+                $user['name'] = $user->getNameAttribute();
                 $response["success"] = true;
                 $response["response"] = $user;
                 $response["role"] = $role->name;

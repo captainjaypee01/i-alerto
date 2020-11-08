@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\BackpackUser as User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 /**
@@ -26,6 +27,7 @@ class UserTableSeeder extends Seeder
             'last_name'              => 'Istrator',
             'email'             => 'admin@admin.com',
             'contact_number'    => '09123456789',
+            'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
             'address'           => 'Sample Address',
         ]);
@@ -36,6 +38,7 @@ class UserTableSeeder extends Seeder
             'last_name'              => 'Employee',
             'email'             => 'one@employee.com',
             'contact_number'    => '09123321788',
+            'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
             'address'           => 'Sample Address',
         ]);
@@ -46,6 +49,7 @@ class UserTableSeeder extends Seeder
             'last_name'              => 'Resident',
             'email'             => 'one@resident.com',
             'contact_number'    => '09123450987',
+            'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
             'address'           => 'Sample Address',
         ]);
@@ -56,6 +60,7 @@ class UserTableSeeder extends Seeder
             'last_name'              => 'Barangay',
             'email'             => 'one@barangay.com',
             'contact_number'    => '09156756787',
+            'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
             'address'           => 'Sample Address',
         ]);
