@@ -21,11 +21,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'middle_name','last_name','email','contact_number','address','health_concern','pwd','senior_citizen','fingerprint','password','date_of_birth',
+        'first_name', 'middle_name','last_name','email','contact_number','address','health_concern','pwd','senior_citizen','fingerprint','password','birthdate',
     ];
 
 
-    protected $dates = ['date_of_birth'];
+    protected $dates = ['birthdate'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -43,7 +43,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'date_of_birth' => 'date'
+        'birthdate' => 'date'
     ];
 
 

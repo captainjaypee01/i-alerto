@@ -31,7 +31,6 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'contact_number' => ['required', 'string','digits:11', 'unique:users'],
         ];
@@ -42,32 +41,16 @@ class RegisterController extends Controller
             $response['response'] = $validator->messages();
         } else {
             if ($request->has("left_index_fingerprint") && $request->has("right_index_fingerprint")) {
-                $folder = str_replace(' ', '', strtolower($request->name))."-".$request->birthdate;
+                $name_edited = strtolower($request->first_name."".$request->middle_name."".$request->last_name);
+                $folder = str_replace(' ', '', strtolower($name_edited))."-".$request->birthdate;
                 $left_index_fingerprint_image = "left_index_finger.jpg";
                 $uploaded1 = $request->left_index_fingerprint->move(public_path("/fingerprint/$folder"), $left_index_fingerprint_image);
 
                 $right_index_fingerprint_image = "right_index_finger.jpg";
                 $uploaded2 = $request->right_index_fingerprint->move(public_path("/fingerprint/$folder"), $right_index_fingerprint_image);
                 if($uploaded1 && $uploaded2){
-                    $name = $request->first_name." ".$request->middle_name." ".$request->last_name;
-                    $user = BackpackUser::create([
-                        'name' => $name,
-                        'email' => $request->email,
-                        'contact_number' => $request->contact_number,
-                        'password' => Hash::make($request->password),
-                    ])->assignRole("user");
-    
-                    $resident = $user->resident()->create([
-                        'first_name' => $request->first_name,
-                        'middle_name' => $request->middle_name,
-                        'last_name' => $request->last_name,
-                        'address' => $request->address,
-                        'birthdate' => Carbon::createFromTimestampMs($request->birthdate)->format('Y-m-d'),
-                        'health_concern' => $request->health_concern,
-                        'pwd' => $request->pwd,
-                        'senior_citizen' => $request->senior,
-                        'fingerprint' => $folder,
-                    ]);
+                    $user = $this->store_user($request,$folder);
+                    $resident = $this->store_resident($user,$request,$folder);
                     
                     $role = $user->roles;
                     $role = $role[0];
@@ -89,6 +72,41 @@ class RegisterController extends Controller
             }
         }
         return response()->json($response, 200);
+    }
+
+    public function store_user($request,$folder)
+    {
+        $user = BackpackUser::create([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
+            'birthdate' => Carbon::createFromTimestampMs($request->birthdate)->format('Y-m-d'),
+            'address' => $request->address,
+            'health_concern' => $request->health_concern,
+            'pwd' => $request->pwd,
+            'senior_citizen' => $request->senior,
+            'fingerprint' => $folder,
+            'password' => Hash::make($request->password),
+        ])->assignRole("resident");
+        return $user;
+    }
+
+    public function store_resident($user,$request,$folder)
+    {
+        $resident = $user->resident()->create([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'address' => $request->address,
+            'birthdate' => Carbon::createFromTimestampMs($request->birthdate)->format('Y-m-d'),
+            'health_concern' => $request->health_concern,
+            'pwd' => $request->pwd,
+            'senior_citizen' => $request->senior,
+            'fingerprint' => $folder,
+        ]);
+        return $resident;
     }
 
     public function check_first(Request $request)
