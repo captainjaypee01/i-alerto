@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\ChatAlert;
 use App\Http\Controllers\Controller;
 use App\Models\Alert;
+use App\Models\BackpackUser;
+use App\Models\Conversation;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AlertController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -63,6 +68,61 @@ class AlertController extends Controller
         ], 200);
     }
 
+
+    public function chat(Request $request)
+    {
+        $message = Conversation::create([
+                                    'user_id' => $request->user_id,
+                                    'alert_id' => $request->alert_id,
+                                    'message' => $request->message
+                                ]);
+        unset($message['user']);
+        event(new ChatAlert($message,$request->alert_id));
+        // return response()->json($message,200);
+    }
+
+
+
+    public function conversations()
+    {
+        $alert_id = request()->segment(5);
+        $conv = Conversation::where("alert_id",$alert_id)->get();
+        return response()->json($conv, 200);
+    }
+
+    public function conversation_status()
+    {
+        $alert_id = request()->segment(5);
+        $user_id = request()->segment(6);
+        $role = request()->segment(7);
+        // $conv = Conversation::where('alert_id',$alert_id)->first();
+        $alert = Alert::find($alert_id);
+        $response = ["is_empty"=>false,"has_chat" => false];
+        if($role == "resident"){
+            $uid = $alert->user_id;
+            if($uid == $user_id){
+                $response["has_chat"] = true;
+            }
+        }
+        else if ($role == "barangay" || $role == "employee"){
+            $with_chat = $alert->conversations->where("alert_id",$alert_id)->first();
+            if($with_chat){
+                $has_chat = $alert->conversations->where("user_id",$user_id)->first();
+                if($has_chat){
+                    $response["has_chat"] = true;
+                }
+                else{
+                    $response["has_chat"] = false;
+                }
+                
+            }
+            else{
+                $response["is_empty"] = true;
+            }
+        }
+        return response()->json($response, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -79,6 +139,8 @@ class AlertController extends Controller
                 'type' => $request->type,
                 'status' => 0
             ]);
+
+        $alert["alert_id"] = $alert->id;
         
         $response = [];
 

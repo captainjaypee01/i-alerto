@@ -46,6 +46,11 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
     Route::group(['prefix' => 'alerts'], function () {
         Route::get('/history', 'AlertController@history');
     });
+    Route::group(['prefix' => 'alert'], function () {
+        Route::post('/chat', 'AlertController@chat');
+        Route::get('/conversations/{alert_id}','AlertController@conversations');
+        Route::get('/conversation_status/{alert_id}/{user_id}/{role}','AlertController@conversation_status');
+    });
 });
 
 

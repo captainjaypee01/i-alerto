@@ -165,6 +165,11 @@ class Alert extends Model
     {
         return $this->belongsTo(BackpackUser::class);
     }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

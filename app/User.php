@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Conversation;
 use Backpack\CRUD\app\Models\Traits\CrudTrait; // <------------------------------- this one
 use Spatie\Permission\Traits\HasRoles;// <---------------------- and this one
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -57,6 +58,12 @@ class User extends Authenticatable
 
     public function resident(){
         return $this->hasOne(Resident::class);
+    }
+    
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
     }
 
 

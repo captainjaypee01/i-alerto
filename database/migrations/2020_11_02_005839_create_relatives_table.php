@@ -16,13 +16,16 @@ class CreateRelativesTable extends Migration
         Schema::create('relatives', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedInteger('resident_id');
+            $table->unsignedBigInteger('resident_id');
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->date('birthdate')->nullable();
             $table->text('address')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('resident_id')->references('id')->on('residents');
         });
     }
 

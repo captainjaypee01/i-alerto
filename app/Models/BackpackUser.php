@@ -47,5 +47,10 @@ class BackpackUser extends User
     public function resident(){
         return $this->hasOne(Resident::class);
     }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
     
 }
