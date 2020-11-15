@@ -31,4 +31,5 @@ Route::group([
     Route::group(['prefix' => 'alert', 'as' => 'alert.'], function(){
         Route::patch('/{alert}/response', 'Custom\CustomAlertController@response')->name('response.update');
     });
+    Route::crud('official', 'OfficialCrudController');
 }); // this should be the absolute last line of this file

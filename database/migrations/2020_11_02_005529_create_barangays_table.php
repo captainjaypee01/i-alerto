@@ -20,7 +20,10 @@ class CreateBarangaysTable extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->date('birthdate')->nullable();
-            $table->text('address')->nullable();
+            $table->text('province');
+            $table->text('city');
+            $table->text('barangay');
+            $table->text('detailed_address');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

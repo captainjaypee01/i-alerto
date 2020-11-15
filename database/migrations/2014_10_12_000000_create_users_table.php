@@ -21,7 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('contact_number')->unique();
             $table->date('birthdate');
-            $table->text('address');
+            $table->text('province');
+            $table->text('city');
+            // $table->text('barangay');
+            $table->text('detailed_address');
             $table->text('health_concern')->nullable();
             $table->boolean('pwd')->default(false);
             $table->boolean('senior_citizen')->default(false);

@@ -16,11 +16,15 @@ class CreateResidentsTable extends Migration
         Schema::create('residents', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('barangay_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->date('birthdate')->nullable();
-            $table->text('address')->nullable();
+            $table->text('province');
+            $table->text('city');
+            $table->text('barangay');
+            $table->text('detailed_address');
             $table->text('health_concern')->nullable();
             $table->boolean('pwd')->default(false);
             $table->boolean('senior_citizen')->default(false);

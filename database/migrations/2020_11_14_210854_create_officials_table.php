@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRelativesTable extends Migration
+class CreateOfficialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateRelativesTable extends Migration
      */
     public function up()
     {
-        Schema::create('relatives', function (Blueprint $table) {
+        Schema::create('officials', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('resident_id');
             $table->unsignedBigInteger('barangay_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
@@ -27,9 +26,6 @@ class CreateRelativesTable extends Migration
             $table->text('barangay');
             $table->text('detailed_address');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('resident_id')->references('id')->on('residents');
         });
     }
 
@@ -40,6 +36,6 @@ class CreateRelativesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relatives');
+        Schema::dropIfExists('officials');
     }
 }
