@@ -15,11 +15,11 @@ class CreateEvacuationsTable extends Migration
     {
         Schema::create('evacuations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('city');
-            $table->string('barangay');
-            $table->string('address');
-            $table->integer('capacity');
+            $table->string('name')->nullable();
+            $table->string('city')->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('address')->nullable();
+            $table->integer('capacity')->nullable();
             $table->string('status');
             $table->timestamps();
         });

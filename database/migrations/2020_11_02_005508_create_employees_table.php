@@ -16,11 +16,17 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('barangay_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('email')->unique();
+            $table->string('contact_number')->unique();
             $table->date('birthdate')->nullable();
-            $table->text('address')->nullable();
+            $table->text('province')->nullable();
+            $table->text('city')->nullable();
+            $table->text('barangay')->nullable();
+            $table->text('detailed_address')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -22,7 +22,7 @@ class UserRoleTableSeeder extends Seeder
         BackpackUser::find(1)->assignRole('administrator');
         BackpackUser::find(2)->assignRole('employee');
         BackpackUser::find(3)->assignRole('resident');
-        BackpackUser::find(4)->assignRole('barangay');
+        BackpackUser::find(4)->assignRole('official');
 
         $this->enableForeignKeys();
     }

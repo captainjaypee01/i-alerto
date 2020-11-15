@@ -38,7 +38,11 @@ class Employee extends Model
     public function user(){
         return $this->belongsTo(BackpackUser::class);
     }
-    
+
+    public function barangay(){
+        return $this->belongsTo(Barangay::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
