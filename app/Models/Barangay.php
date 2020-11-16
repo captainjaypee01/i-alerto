@@ -35,7 +35,20 @@ class Barangay extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
 
+    public function residents()
+    {
+        return $this->hasMany(Resident::class);
+    }
+
+    public function officials()
+    {
+        return $this->hasMany(Official::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

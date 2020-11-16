@@ -32,7 +32,97 @@ class EmployeeCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
+        $this->crud->addColumn([
+            'name' => 'full_name',
+            'label' => "Full Name",
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'email',
+            'label' => "Email",
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'contact_number',
+            'label' => "Contact Number",
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'assigned_barangay',
+            'label' => "Assigned Barangay",
+            'type' => 'text',
+        ]);
+    }
+
+
+    protected function setupShowOperation(){
+        $this->crud->setColumns([
+            [
+                'name' => 'first_name',
+                'label' => "First Name",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'middle_name',
+                'label' => "Middle Name",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'last_name',
+                'label' => "Last Name",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'email',
+                'label' => "Email",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'contact_number',
+                'label' => "Contact Number",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'assigned_barangay',
+                'label' => "Assigned Barangay",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'province',
+                'label' => "Province",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'city',
+                'label' => "City",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'barangay',
+                'label' => "Barangay",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'detailed_address',
+                'label' => "Detailed Address",
+                'type' => 'text',
+            ],
+            [
+                'name' => 'user_id',
+                'label' => "User",
+                'type' => 'text',
+                'visibleInTable' => false,
+                'visibleInShow' => false,
+            ],
+            [
+                'name' => 'barangay_id',
+                'label' => "Assigned Barangay",
+                'type' => 'text',
+                'visibleInTable' => false,
+                'visibleInShow' => false,
+            ],
+        ]);
     }
 
     protected function setupCreateOperation()

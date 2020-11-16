@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Resident extends Model
 {
@@ -29,6 +30,25 @@ class Resident extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getFullNameAttribute(){
+        $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0])) .
+        $this->last_name;
+        return ucwords($full_name);
+    }
+
+    public function getAssignedBarangayAttribute(){
+
+        return $this->assign->name;
+    }
+
+    public function getPwdStatusAttribute(){
+        return $this->pwd == 1 ? 'Yes' : 'No';
+    }
+
+    public function getSeniorCitizenStatusAttribute(){
+        return $this->senior_citizen == 1 ? 'Yes' : 'No';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -43,8 +63,8 @@ class Resident extends Model
         return $this->hasMany(Relative::class);
     }
 
-    public function barangay(){
-        return $this->belongsTo(Barangay::class);
+    public function assign(){
+        return $this->belongsTo(Barangay::class, 'barangay_id');
     }
     /*
     |--------------------------------------------------------------------------
