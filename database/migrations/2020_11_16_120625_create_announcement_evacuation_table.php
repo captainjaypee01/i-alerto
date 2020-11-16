@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAnnouncementBarangayTable extends Migration
+class CreateAnnouncementEvacuationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateAnnouncementBarangayTable extends Migration
      */
     public function up()
     {
-        Schema::create('announcement_barangay', function (Blueprint $table) {
+        Schema::create('announcement_evacuation', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('announcement_id')->nullable();
-            $table->bigInteger('barangay_id')->nullable();
+            $table->bigInteger('evacuation_id')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateAnnouncementBarangayTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcement_barangay');
+        Schema::dropIfExists('announcement_evacuation');
     }
 }

@@ -29,6 +29,10 @@ class Evacuation extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getFullAddressAttribute(){
+        return $this->city . ' ' . $this->barangay . ' ' . $this->address;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

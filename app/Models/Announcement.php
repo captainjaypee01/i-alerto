@@ -40,6 +40,11 @@ class Announcement extends Model
         return $this->belongsToMany(Barangay::class, 'announcement_barangay');
     }
 
+    public function evacuations()
+    {
+        return $this->belongsToMany(Evacuation::class, 'announcement_evacuation');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

@@ -32,18 +32,21 @@ class AnnouncementCrudController extends CrudController
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->setFromDb();
-        $this->crud->addColumn(
-            [
-                'name' => 'barangays',
-                'label' => 'List of Barangay',
-                'type' => 'relationship',
-            ]);
-            $this->crud->addColumn(
-            [
-                'name' => 'created_at',
-                'label' => 'Date Posted',
-                'type' => 'date',
-            ]);
+        $this->crud->addColumn([
+            'name' => 'evacuations',
+            'label' => 'List of Evacuation Centers',
+            'type' => 'relationship',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'barangays',
+            'label' => 'List of Barangay',
+            'type' => 'relationship',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'created_at',
+            'label' => 'Date Posted',
+            'type' => 'date',
+        ]);
 
         Log::info('Visit Announcement List page', ['user' => backpack_user()]);
     }
@@ -54,6 +57,19 @@ class AnnouncementCrudController extends CrudController
 
         // TODO: remove setFromDb() and manually define Fields
         $this->crud->setFromDb();
+        $this->crud->addField([
+            'label' => "Set Available Evacuation Centers for Barangays (optional)",
+            'type' => 'select2_multiple',
+            'name' => 'evacuations',
+            'entity' => 'evacuations',
+            'attribute' => 'name',
+            'model' => "App\Models\Evacuation",
+            'pivot' => true,
+            'select_all' => true,
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
+        ]);
         $this->crud->addField([
             'label' => "Barangay",
             'type' => 'select2_multiple',
@@ -83,6 +99,12 @@ class AnnouncementCrudController extends CrudController
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->setFromDb();
+        $this->crud->addColumn(
+        [
+            'name' => 'evacuations',
+            'label' => 'List of Evacuation Centers',
+            'type' => 'relationship',
+        ]);
         $this->crud->addColumn(
         [
             'name' => 'barangays',
