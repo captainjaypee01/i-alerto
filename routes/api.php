@@ -34,6 +34,7 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
 
     Route::group(['prefix' => 'register/store'], function () {
         Route::post('/check_first', 'RegisterController@check_first');
+        Route::post('/check_address','RegisterController@verify_address');
     });
 
     Route::group(['prefix' => 'update'], function () {

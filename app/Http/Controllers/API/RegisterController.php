@@ -83,7 +83,10 @@ class RegisterController extends Controller
             'email' => $request->email,
             'contact_number' => $request->contact_number,
             'birthdate' => Carbon::createFromTimestampMs($request->birthdate)->format('Y-m-d'),
-            'address' => $request->address,
+            'province' => $request->province,
+            'city' => $request->city,
+            'barangay' => $request->barangay,
+            'detailed_address' => $request->detailed_address,
             'health_concern' => $request->health_concern,
             'pwd' => $request->pwd,
             'senior_citizen' => $request->senior,
@@ -99,7 +102,10 @@ class RegisterController extends Controller
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
-            'address' => $request->address,
+            'province' => $request->province,
+            'city' => $request->city,
+            'barangay' => $request->barangay,
+            'detailed_address' => $request->detailed_address,
             'birthdate' => Carbon::createFromTimestampMs($request->birthdate)->format('Y-m-d'),
             'health_concern' => $request->health_concern,
             'pwd' => $request->pwd,
@@ -117,7 +123,6 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'contact_number' => ['required', 'string','digits:11', 'unique:users'],
-            'address' => ['required', 'string','max:255'],
             'pwd' => ['boolean'],
             'senior' => ['boolean'],
             'birthdate' => ['required', 'string'],
@@ -129,15 +134,27 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
-            // $user = BackpackUser::create([
-            //     'name' => $request->name,
-            //     'email' => $request->email,
-            //     'password' => Hash::make($request->password),
-            // ])->assignRole("user");
+            $response["success"] = true;
+            $response['response'] = $request->all();
+            // $response["role"] = $role->name;
+        }
+        return response()->json($response, 200);
+    }
 
-            // $role = $user->roles;
-            // $role = $role[0];
+    public function verify_address(Request $request)
+    {
+        $rules = [
+            'province' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'barangay' => ['required', 'string', 'max:255'],
+            'detailed_address' => ['required', 'string', 'max:255'],
+        ];
 
+        $response = array('success' => false);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['response'] = $validator->messages();
+        } else {
             $response["success"] = true;
             $response['response'] = $request->all();
             // $response["role"] = $role->name;
