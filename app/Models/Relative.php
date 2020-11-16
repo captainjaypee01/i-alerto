@@ -28,7 +28,16 @@ class Relative extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getFullNameAttribute(){
+        $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0])) .
+        $this->last_name;
+        return ucwords($full_name);
+    }
 
+    public function getAssignedBarangayAttribute(){
+
+        return $this->assign->name;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -41,6 +50,10 @@ class Relative extends Model
 
     public function resident(){
         return $this->hasOne(Resident::class);
+    }
+
+    public function assign(){
+        return $this->belongsTo(Barangay::class, 'barangay_id');
     }
     /*
     |--------------------------------------------------------------------------

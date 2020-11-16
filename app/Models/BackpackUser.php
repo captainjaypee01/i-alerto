@@ -39,11 +39,11 @@ class BackpackUser extends User
     public function barangay(){
         return $this->hasOne(Barangay::class);
     }
-    
+
     public function employee(){
         return $this->hasOne(Employee::class);
     }
-    
+
     public function resident(){
         return $this->hasOne(Resident::class);
     }
@@ -52,5 +52,5 @@ class BackpackUser extends User
     {
         return $this->hasMany(Conversation::class);
     }
-    
+
 }

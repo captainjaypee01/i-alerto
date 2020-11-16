@@ -51,9 +51,9 @@ class Alert extends Model
         $respond = $this->status;
         $btnHtml = '';
         if($respond == 0)
-            $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message . '</a>';
+            $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message . '</a>';
         else
-            $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message .'</a>';
+            $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message .'</a>';
 
 
         $script = '

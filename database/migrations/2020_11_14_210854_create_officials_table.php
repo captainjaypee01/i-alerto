@@ -28,6 +28,8 @@ class CreateOfficialsTable extends Migration
             $table->text('barangay')->nullable();
             $table->text('detailed_address')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -30,7 +30,7 @@ class CreateResidentsTable extends Migration
             $table->text('health_concern')->nullable();
             $table->boolean('pwd')->default(false)->nullable();
             $table->boolean('senior_citizen')->default(false)->nullable();
-            $table->text('fingerprint');
+            $table->text('fingerprint')->nullable();
 
             $table->timestamps();
 
