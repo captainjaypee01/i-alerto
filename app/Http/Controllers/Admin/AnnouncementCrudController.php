@@ -20,7 +20,7 @@ class AnnouncementCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    
+
     public function setup()
     {
         $this->crud->setModel('App\Models\Announcement');
@@ -32,13 +32,19 @@ class AnnouncementCrudController extends CrudController
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->setFromDb();
+        $this->crud->addColumn(
+            [
+                'name' => 'barangays',
+                'label' => 'List of Barangay',
+                'type' => 'relationship',
+            ]);
             $this->crud->addColumn(
             [
                 'name' => 'created_at',
                 'label' => 'Date Posted',
                 'type' => 'date',
             ]);
-            
+
         Log::info('Visit Announcement List page', ['user' => backpack_user()]);
     }
 
@@ -48,6 +54,19 @@ class AnnouncementCrudController extends CrudController
 
         // TODO: remove setFromDb() and manually define Fields
         $this->crud->setFromDb();
+        $this->crud->addField([
+            'label' => "Barangay",
+            'type' => 'select2_multiple',
+            'name' => 'barangays',
+            'entity' => 'barangays',
+            'attribute' => 'name',
+            'model' => "App\Models\Barangay",
+            'pivot' => true,
+            'select_all' => true,
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
+        ]);
         Log::info('Visit Announcement Create page', ['user' => backpack_user()]);
     }
 
@@ -55,24 +74,30 @@ class AnnouncementCrudController extends CrudController
     {
         $this->setupCreateOperation();
         Log::info('Visit Announcement Update page', [
-                        'user' => backpack_user(), 
+                        'user' => backpack_user(),
                         'announcement' => $this->crud->getCurrentEntry()
                         ]);
     }
-    
+
     protected function setupShowOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->setFromDb();
-            $this->crud->addColumn(
-            [
-                'name' => 'created_at',
-                'label' => 'Date Posted',
-                'type' => 'date',
-            ]);
-            
+        $this->crud->addColumn(
+        [
+            'name' => 'barangays',
+            'label' => 'List of Barangay',
+            'type' => 'relationship',
+        ]);
+        $this->crud->addColumn(
+        [
+            'name' => 'created_at',
+            'label' => 'Date Posted',
+            'type' => 'date',
+        ]);
+
         Log::info('Visit Announcement Show page', [
-                'user' => backpack_user(), 
+                'user' => backpack_user(),
                 'announcement' => $this->crud->getCurrentEntry()
             ]);
     }
@@ -83,7 +108,7 @@ class AnnouncementCrudController extends CrudController
      * @return Response
      */
     public function store(){
-        
+
         $this->crud->hasAccessOrFail('create');
 
         // execute the FormRequest authorization and validation, if one is required
@@ -123,12 +148,12 @@ class AnnouncementCrudController extends CrudController
 
         // save the redirect choice for next time
         $this->crud->setSaveAction();
-        
+
         Log::info("Announcement created | ", ['user' => backpack_user(), 'announcement' => $item]);
         return $this->crud->performSaveAction($item->getKey());
     }
 
-    
+
     /**
      * Update the specified resource in the database.
      *
@@ -155,7 +180,7 @@ class AnnouncementCrudController extends CrudController
         Log::info("Announcement updated | ", ['user' => backpack_user(), 'announcement' => $item]);
         return $this->crud->performSaveAction($item->getKey());
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *

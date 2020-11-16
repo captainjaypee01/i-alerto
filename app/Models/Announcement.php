@@ -35,6 +35,11 @@ class Announcement extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function barangays()
+    {
+        return $this->belongsToMany(Barangay::class, 'announcement_barangay');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
