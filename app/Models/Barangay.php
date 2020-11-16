@@ -36,10 +36,6 @@ class Barangay extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user(){
-        return $this->belongsTo(BackpackUser::class);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES

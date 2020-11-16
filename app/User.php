@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Conversation;
+use App\Models\Official;
 use Backpack\CRUD\app\Models\Traits\CrudTrait; // <------------------------------- this one
 use Spatie\Permission\Traits\HasRoles;// <---------------------- and this one
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -48,8 +49,8 @@ class User extends Authenticatable
     ];
 
 
-    public function barangay(){
-        return $this->hasOne(Barangay::class);
+    public function official(){
+        return $this->hasOne(Official::class);
     }
 
     public function employee(){
@@ -59,7 +60,7 @@ class User extends Authenticatable
     public function resident(){
         return $this->hasOne(Resident::class);
     }
-    
+
 
     public function conversations()
     {

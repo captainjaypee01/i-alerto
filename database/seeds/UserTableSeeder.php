@@ -29,7 +29,6 @@ class UserTableSeeder extends Seeder
             'contact_number'    => '09123456789',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
-            'address'           => 'Sample Address',
         ]);
 
         User::create([
@@ -40,7 +39,6 @@ class UserTableSeeder extends Seeder
             'contact_number'    => '09123321788',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
-            'address'           => 'Sample Address',
         ]);
 
         User::create([
@@ -51,7 +49,6 @@ class UserTableSeeder extends Seeder
             'contact_number'    => '09123450987',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
-            'address'           => 'Sample Address',
         ]);
 
         User::create([
@@ -62,7 +59,6 @@ class UserTableSeeder extends Seeder
             'contact_number'    => '09156756787',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'password'          => Hash::make('secret'),
-            'address'           => 'Sample Address',
         ]);
 
         $this->enableForeignKeys();

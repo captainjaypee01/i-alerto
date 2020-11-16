@@ -20,16 +20,18 @@ class CreateResidentsTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('email')->unique();
+            $table->string('contact_number')->unique();
             $table->date('birthdate')->nullable();
-            $table->text('province');
-            $table->text('city');
-            $table->text('barangay');
-            $table->text('detailed_address');
+            $table->text('province')->nullable();
+            $table->text('city')->nullable();
+            $table->text('barangay')->nullable();
+            $table->text('detailed_address')->nullable();
             $table->text('health_concern')->nullable();
-            $table->boolean('pwd')->default(false);
-            $table->boolean('senior_citizen')->default(false);
+            $table->boolean('pwd')->default(false)->nullable();
+            $table->boolean('senior_citizen')->default(false)->nullable();
             $table->text('fingerprint');
-            
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

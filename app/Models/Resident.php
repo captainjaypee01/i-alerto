@@ -38,11 +38,14 @@ class Resident extends Model
     public function user(){
         return $this->belongsTo(BackpackUser::class);
     }
-    
+
     public function relatives(){
         return $this->hasMany(Relative::class);
     }
-    
+
+    public function barangay(){
+        return $this->belongsTo(Barangay::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
