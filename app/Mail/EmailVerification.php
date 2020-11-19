@@ -10,16 +10,17 @@ use Illuminate\Queue\SerializesModels;
 class EmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
+    public $user,$type;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user,$type=null)
     {
         $this->user = $user;
+        $this->type = $type;
     }
 
     /**
@@ -29,7 +30,8 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->view('verification',["user" => $this->user])
+        $view = $this->type != null ? 'resend'  : 'verification' ;
+        return $this->view($view,["user" => $this->user])
                     ->from('firealert.manila@gmail.com');
     }
 }
