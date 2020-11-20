@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('type');
             $table->text('fingerprint');
             $table->text('verification_code')->nullable();
+            $table->text('fcm_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

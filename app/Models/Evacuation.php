@@ -21,7 +21,8 @@ class Evacuation extends Model
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
-    // protected $dates = [];
+    protected $dates = ['created_at', 'updated_at'];
+    protected $appends = ['full_address','date'];
 
     /*
     |--------------------------------------------------------------------------
@@ -31,6 +32,16 @@ class Evacuation extends Model
 
     public function getFullAddressAttribute(){
         return $this->city . ' ' . $this->barangay . ' ' . $this->address;
+    }
+
+    public function getMobileCreatedAtAttribute()
+    {
+        return $this->created_at->format('M d,Y h:i A');
+    }
+
+    public function getDateAttribute()
+    {
+        return $this->getMobileCreatedAtAttribute();
     }
 
     /*

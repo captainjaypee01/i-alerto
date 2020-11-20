@@ -28,6 +28,7 @@ class UserTableSeeder extends Seeder
             'email'             => 'admin@admin.com',
             'contact_number'    => '09123456789',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
+            'email_verified_at' => now(),
             'password'          => Hash::make('secret'),
         ]);
 
@@ -38,6 +39,7 @@ class UserTableSeeder extends Seeder
             'email'             => 'one@employee.com',
             'contact_number'    => '09123321788',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
+            'email_verified_at' => now(),
             'password'          => Hash::make('secret'),
         ]);
 
@@ -48,6 +50,7 @@ class UserTableSeeder extends Seeder
             'email'             => 'one@resident.com',
             'contact_number'    => '09123450987',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
+            'email_verified_at' => now(),
             'password'          => Hash::make('secret'),
         ]);
 
@@ -58,6 +61,7 @@ class UserTableSeeder extends Seeder
             'email'             => 'one@barangay.com',
             'contact_number'    => '09156756787',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
+            'email_verified_at' => now(),
             'password'          => Hash::make('secret'),
         ]);
 

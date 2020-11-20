@@ -28,6 +28,11 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
     Route::group(['prefix' => 'login_request'], function () {
         Route::post('/login_submit', 'LoginController@login_submit');
     });
+    
+
+    Route::group(['prefix' => 'login/update'], function () {
+        Route::post('/update_token','LoginController@update_token');
+    });
 
     //Register
     Route::apiResource('register', 'RegisterController');
@@ -62,6 +67,10 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
         Route::get('/conversations/{alert_id}','AlertController@conversations');
         Route::get('/conversation_status/{alert_id}/{user_id}/{role}','AlertController@conversation_status');
     });
+
+
+    //Evacuation
+    Route::apiResource('evacuation','EvacuationController');
 });
 
 

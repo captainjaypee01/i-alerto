@@ -153,30 +153,37 @@ class AlertController extends Controller
 
 
 
-            $url ="https://fcm.googleapis.com/fcm/send";
-            $fields=array(
-                "to"=>"/topics/alert",
+            $accounts = BackpackUser::role(['employee','official'])->get();
+            $fcm_tokens = [];
+            foreach($accounts as $user)
+            {
+                $fcm_tokens[] = $user->fcm_token;
+            }
+
+            $url = 'https://fcm.googleapis.com/fcm/send';
+            $fields = array (
+                'registration_ids' => $fcm_tokens,
                 "data" => array(
                     "body" => $request->address,
                     "title" => "Alert",
                     "from_activity" => "alert_notif",
                 ),
             );
-
-            $headers=array(
-                'Authorization: key=AAAAvF1qE-A:APA91bHFsBPdURKVGuqE3IZB7Ztw5REJaRZQl7mpb1lrDuUM0YyYnWHEiZeJpgzKBT0YM4NoAzaznKQE5RnlsB9HdmrjasLRj0HvqGpqwknSOS7eRIg67PyLAbWTAO3RAAeeaTPob2EM',
-                'Content-Type:application/json'
+            $fields = json_encode ($fields);
+            $headers = array (
+                'Authorization: key=' . "AAAAvF1qE-A:APA91bHFsBPdURKVGuqE3IZB7Ztw5REJaRZQl7mpb1lrDuUM0YyYnWHEiZeJpgzKBT0YM4NoAzaznKQE5RnlsB9HdmrjasLRj0HvqGpqwknSOS7eRIg67PyLAbWTAO3RAAeeaTPob2EM",
+                'Content-Type: application/json'
             );
 
-            $ch=curl_init();
-            curl_setopt($ch,CURLOPT_URL,$url);
-            curl_setopt($ch,CURLOPT_POST,true);
-            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
-            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($fields));
-            $result=curl_exec($ch);
+            $ch = curl_init ();
+            curl_setopt ( $ch, CURLOPT_URL, $url );
+            curl_setopt ( $ch, CURLOPT_POST, true );
+            curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
+            curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
+            curl_setopt ( $ch, CURLOPT_POSTFIELDS, $fields );
+            $result = curl_exec ( $ch );
             // echo $result;
-            curl_close($ch);
+            curl_close ( $ch );
         }
 
         return response()->json($response, 200);

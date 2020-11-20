@@ -40,4 +40,12 @@ class LoginController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function update_token(Request $request){
+        $user = BackpackUser::find($request->id);
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
+        return response()->json(["success"=>true,"response" => $user->fcm_token], 200);
+    }
+
 }
