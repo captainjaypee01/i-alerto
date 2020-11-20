@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EmailVerification;
 use App\Models\BackpackUser;
+use App\Models\Barangay;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -19,7 +23,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -49,7 +53,8 @@ class RegisterController extends Controller
                 $right_index_fingerprint_image = "right_index_finger.jpg";
                 $uploaded2 = $request->right_index_fingerprint->move(public_path("/fingerprint/$folder"), $right_index_fingerprint_image);
                 if($uploaded1 && $uploaded2){
-                    $user = $this->store_user($request,$folder);
+                    $verification_code = Str::random(10);
+                    $user = $this->store_user($request,$verification_code,$folder);
                     $resident = $this->store_resident($user,$request,$folder);
                     
                     $role = $user->roles;
@@ -61,6 +66,8 @@ class RegisterController extends Controller
                         "user" => $user,
                         "resident" => $resident
                     ];
+
+                    Mail::to($user->email)->send(new EmailVerification($user));
     
                     $response["success"] = true;
                     $response['response'] = $res;
@@ -74,7 +81,7 @@ class RegisterController extends Controller
         return response()->json($response, 200);
     }
 
-    public function store_user($request,$folder)
+    public function store_user($request,$verification_code,$folder)
     {
         $user = BackpackUser::create([
             'first_name' => $request->first_name,
@@ -92,13 +99,16 @@ class RegisterController extends Controller
             'senior_citizen' => $request->senior,
             'fingerprint' => $folder,
             'password' => Hash::make($request->password),
+            'verification_code' => $verification_code
         ])->assignRole("resident");
         return $user;
     }
 
     public function store_resident($user,$request,$folder)
     {
+        $barangay = Barangay::where("name",$request->barangay)->first();
         $resident = $user->resident()->create([
+            'barangay_id' => $barangay->id,
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
@@ -160,6 +170,78 @@ class RegisterController extends Controller
             // $response["role"] = $role->name;
         }
         return response()->json($response, 200);
+    }
+
+    public function resend_code(Request $request)
+    {
+        $rules = [
+            'email' => ['required', 'string', 'max:255','email'],
+        ];
+
+        $response = array('success' => false);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['response'] = $validator->messages();
+        } else {
+            $response['success'] = true;
+            $user = BackpackUser::where("email",$request->email)->first();
+            if($user){
+                Mail::to($user->email)->send(new EmailVerification($user,"resend"));
+            }
+            
+        }
+
+        return response()->json($response, 200);
+    }
+
+
+    public function verify_account(Request $request)
+    {
+        $rules = [
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'verification_code' => ['required', 'string',Rule::exists('users')->where(function($query) use ($request){
+                $query->where("email",$request->email);
+            })],
+        ];
+
+        $response = array('success'=>false);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['response'] = $validator->messages();
+        }else{
+            $user = BackpackUser::with('roles')->where('email',$request->email)->first();
+            if (is_null($user->email_verified_at) && strcmp($user->verification_code, $request->verification_code) === 0) {
+                $user->email_verified_at = now();
+                $user->save();
+                $role = $user->roles;
+                $role = $role[0];
+                $response["success"] = true;
+                $response["role"] = $role->name;
+                $response['response'] = $user;
+            }
+            else if(is_null($user->email_verified_at) && strcmp($user->verification_code, $request->verification_code) !== 0){
+                $error = [];
+                $error["verification_code"] = ["The selected verification code is invalid."];
+                $response['response'] = $error;
+            }
+            else{
+                $error = [];
+                $error["error"] = "Your account is already verified.";
+                $response['response'] = $error;
+            }
+            
+        }
+        return response()->json($response, 200);
+    }
+
+    public function barangay()
+    {
+        $barangays = Barangay::all();
+        $data = [
+            'success' => true,
+            'barangays' => $barangays
+        ];
+        return response()->json($data, 200);
     }
 
     /**

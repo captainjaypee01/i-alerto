@@ -18,16 +18,23 @@ class LoginController extends Controller
 
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                $role = $user->roles;
-                $role = $role[0];
-                $user['name'] = $user->getNameAttribute();
-                $response["success"] = true;
-                $response["response"] = $user;
-                $response["role"] = $role->name;
-            } else {
+                if (!is_null($user->email_verified_at)) {
+                    $role = $user->roles;
+                    $role = $role[0];
+                    $user['name'] = $user->getNameAttribute();
+                    $response["success"] = true;
+                    $response["response"] = $user;
+                    $response["role"] = $role->name;
+                }
+                else{
+                    $response["response"] = "Your account is not yet verified.";
+                }
+            }
+            else{
                 $response["response"] = "These credentials do not match our records.";
             }
-        } else {
+        }
+        else{
             $response["response"] = "These credentials do not match our records.";
         }
 

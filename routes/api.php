@@ -32,9 +32,19 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
     //Register
     Route::apiResource('register', 'RegisterController');
 
+    Route::group(['prefix' => 'register/email'], function () {
+        Route::post('/resend_code','RegisterController@resend_code');
+        Route::post('/verify_account','RegisterController@verify_account');
+    });
+    
+
     Route::group(['prefix' => 'register/store'], function () {
         Route::post('/check_first', 'RegisterController@check_first');
         Route::post('/check_address','RegisterController@verify_address');
+    });
+
+    Route::group(['prefix' => 'register/get'], function () {
+        Route::get('/barangay','RegisterController@barangay');
     });
 
     Route::group(['prefix' => 'update'], function () {
