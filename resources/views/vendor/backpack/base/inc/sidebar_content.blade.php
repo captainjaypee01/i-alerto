@@ -3,7 +3,9 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
 @endhasanyrole
 
-@hasanyrole('administrator|employee')
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('edit-account-info') }}'><i class='nav-icon fa fa-user'></i> My Account</a></li>
+
+@hasanyrole('administrator|employee|official|resident')
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('announcement') }}'><i class='nav-icon fa fa-bullhorn'></i> Announcements</a></li>
 @endhasanyrole
 

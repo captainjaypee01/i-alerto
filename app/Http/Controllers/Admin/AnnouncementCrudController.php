@@ -28,6 +28,9 @@ class AnnouncementCrudController extends CrudController
         $this->crud->setModel('App\Models\Announcement');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/announcement');
         $this->crud->setEntityNameStrings('announcement', 'announcements');
+        if(backpack_user()->hasRole('resident')){
+            $this->crud->denyAccess(['create','update','delete']);
+        }
     }
 
     protected function setupListOperation()
@@ -141,7 +144,7 @@ class AnnouncementCrudController extends CrudController
         // insert item in the db
         $item = $this->crud->create($this->crud->getStrippedSaveRequest());
         $this->data['entry'] = $this->crud->entry = $item;
-        
+
         $this->notify($request);
 
         // show a success message
@@ -238,7 +241,7 @@ class AnnouncementCrudController extends CrudController
         // echo $result;
         curl_close ( $ch );
     }
-    
+
 
 
     /**

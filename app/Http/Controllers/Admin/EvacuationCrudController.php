@@ -29,7 +29,7 @@ class EvacuationCrudController extends CrudController
         CRUD::setModel(\App\Models\Evacuation::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/evacuation');
         CRUD::setEntityNameStrings('evacuation', 'evacuations');
-        if(backpack_user()->hasAnyRole('employee|resident')){
+        if(backpack_user()->hasAnyRole('resident')){
             $this->crud->denyAccess(['create', 'update', 'delete']);
         }
     }
@@ -72,6 +72,7 @@ class EvacuationCrudController extends CrudController
          */
         CRUD::addColumn(['name' => 'name', 'type' => 'text']);
         CRUD::addColumn(['name' => 'capacity', 'type' => 'text']);
+        CRUD::addField(['name' => 'address', 'type' => 'text']);
         CRUD::addColumn(['name' => 'barangays', 'type' => 'relationship']);
         CRUD::addColumn([
             'name' => 'is_avail',
@@ -109,6 +110,7 @@ class EvacuationCrudController extends CrudController
          */
         CRUD::addField(['name' => 'name', 'type' => 'text']);
         CRUD::addField(['name' => 'capacity', 'type' => 'number']);
+        CRUD::addField(['name' => 'address', 'type' => 'text']);
         CRUD::addField([
             'label' => "Barangay",
             'type' => 'select2_multiple',
@@ -123,12 +125,12 @@ class EvacuationCrudController extends CrudController
             }),
         ]);
         CRUD::addField([
-            'name'        => 'is_available',
+            'name'        => 'is_avail',
             'label'       => "Is Available?",
             'type'        => 'select2_from_array',
-            'options'     => [0 => 'No', 1 => 'yes'],
+            'options'     => [1 => 'Yes', 0 => 'No'],
             'allows_null' => false,
-            'default'     => 0,
+            'default'     => 1,
         ]);
     }
 

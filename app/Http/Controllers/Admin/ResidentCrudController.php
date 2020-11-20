@@ -258,7 +258,7 @@ class ResidentCrudController extends CrudController
             'label' => "Assigned Barangay",
             'type' => 'select2',
             'name' => 'barangay_id',
-            'entity' => 'barangay',
+            'entity' => 'assign',
             'attribute' => 'name',
             'model' => "App\Models\Barangay",
             'options'   => (function ($query) {
