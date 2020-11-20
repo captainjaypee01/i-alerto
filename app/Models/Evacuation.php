@@ -29,8 +29,10 @@ class Evacuation extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFullAddressAttribute(){
-        return $this->city . ' ' . $this->barangay . ' ' . $this->address;
+    public function getAvailableStatusAttribute(){
+        $colorBadge = $this->is_avail ? 'success' : 'danger';
+        $text = $this->is_avail ? 'Available' : 'Not Available';
+        return '<span class="badge badge-'. $colorBadge . '">' . $text  . '</span>';
     }
 
     /*
@@ -39,6 +41,10 @@ class Evacuation extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function barangays()
+    {
+        return $this->belongsToMany(Barangay::class, 'barangay_evacuation');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

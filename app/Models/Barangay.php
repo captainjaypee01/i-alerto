@@ -49,6 +49,11 @@ class Barangay extends Model
     {
         return $this->hasMany(Official::class);
     }
+
+    public function evacuations()
+    {
+        return $this->belongsToMany(Evacuation::class, 'barangay_evacuation');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

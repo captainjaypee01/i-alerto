@@ -24,12 +24,23 @@ class BarangayCrudController extends CrudController
         $this->crud->setModel('App\Models\Barangay');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/barangay');
         $this->crud->setEntityNameStrings('barangay', 'barangays');
+
+        $this->crud->denyAccess(['create', 'update', 'delete']);
     }
 
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
+
+        CRUD::addColumn(['name' => 'name', 'type' => 'text']);
+        CRUD::addColumn(['name' => 'evacuations', 'type' => 'relationship']);
+    }
+
+    protected function setupShowOperation(){
+
+        CRUD::addColumn(['name' => 'name', 'type' => 'text']);
+        CRUD::addColumn(['name' => 'evacuations', 'type' => 'relationship']);
     }
 
     protected function setupCreateOperation()
@@ -37,7 +48,8 @@ class BarangayCrudController extends CrudController
         $this->crud->setValidation(BarangayRequest::class);
 
         // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
+
     }
 
     protected function setupUpdateOperation()
