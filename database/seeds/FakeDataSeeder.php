@@ -19,6 +19,6 @@ class FakeDataSeeder extends Seeder
         factory(BackpackUser::class, 20)->states('employee')->create();
         factory(BackpackUser::class, 30)->states('official')->create();
         factory(BackpackUser::class, 200)->states('resident')->create();
-        factory(Barangay::class, 24)->create();
+        // factory(Barangay::class, 24)->create();
     }
 }

@@ -58,7 +58,7 @@ class UserTableSeeder extends Seeder
             'first_name'              => 'One',
             'middle_name'              => 'b',
             'last_name'              => 'Barangay',
-            'email'             => 'one@barangay.com',
+            'email'             => 'one@official.com',
             'contact_number'    => '09156756787',
             'birthdate'         => Carbon::createFromTimestampMs(906307200000)->format('Y-m-d'),
             'email_verified_at' => now(),
