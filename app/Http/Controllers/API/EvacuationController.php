@@ -41,6 +41,8 @@ class EvacuationController extends Controller
     public function store(Request $request)
     {
         $request->merge(['barangay' => json_decode($request->barangay)]);
+        // $is_avail = $request->is_avail == "1" ? 1 : 0 ;
+        // $request->merge(['is_avail' => $is_avail]);
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'capacity' => ['required', 'numeric','min:1'],
@@ -59,6 +61,7 @@ class EvacuationController extends Controller
                 "capacity" => $request->capacity,
                 "address" => $request->address,
                 "barangay" => $request->barangay,
+                "is_avail" => $request->is_avail
             ]);
             $barangay = Barangay::whereIn("name",$request->barangay)->pluck("id");
             $evac->barangays()->attach($barangay);
