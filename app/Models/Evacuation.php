@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Evacuation extends Model
 {
@@ -31,8 +32,9 @@ class Evacuation extends Model
     */
 
     public function getAvailableStatusAttribute(){
-        $colorBadge = $this->is_avail ? 'success' : 'danger';
-        $text = $this->is_avail ? 'Available' : 'Not Available';
+        Log::info($this->is_avail);
+        $colorBadge = $this->is_avail == 1 ? 'success' : 'danger';
+        $text = $this->is_avail == 1 ? 'Available' : 'Not Available';
         return '<span class="badge badge-'. $colorBadge . '">' . $text  . '</span>';
     }
 

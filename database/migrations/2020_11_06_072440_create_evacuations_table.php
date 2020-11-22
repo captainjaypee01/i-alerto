@@ -18,6 +18,7 @@ class CreateEvacuationsTable extends Migration
             $table->string('name')->nullable();
             $table->integer('capacity')->nullable();
             $table->boolean('is_avail')->default(0)->nullable();
+            $table->text('address')->nullable();
             $table->string('status');
             $table->timestamps();
         });

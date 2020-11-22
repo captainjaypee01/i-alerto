@@ -32,4 +32,26 @@ Route::group([
         Route::patch('/{alert}/response', 'Custom\CustomAlertController@response')->name('response.update');
     });
     Route::crud('official', 'OfficialCrudController');
+
+    // if not otherwise configured, setup the "my account" routes
+    if (config('backpack.base.setup_my_account_routes')) {
+        Route::get('edit-account-info', 'MyAccountController@getAccountInfoForm')->name('backpack.account.info');
+        Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
+        Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
+    }
 }); // this should be the absolute last line of this file
+
+Route::group(
+[
+    'namespace'  => 'App\Http\Controllers\Admin',
+    'middleware' => config('backpack.base.web_middleware', 'web'),
+    'prefix'     => config('backpack.base.route_prefix'),
+],
+function () {
+    // if not otherwise configured, setup the "my account" routes
+    if (config('backpack.base.setup_my_account_routes')) {
+        Route::get('edit-account-info', 'MyAccountController@getAccountInfoForm')->name('backpack.account.info');
+        Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
+        Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
+    }
+});

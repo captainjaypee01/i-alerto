@@ -42,8 +42,8 @@ class BackpackUser extends User
         return ucwords($full_name);
     }
 
-    public function barangay(){
-        return $this->hasOne(Barangay::class);
+    public function assign(){
+        return $this->belongsTo(Barangay::class, 'barangay_id');
     }
 
     public function employee(){
