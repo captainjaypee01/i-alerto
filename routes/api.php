@@ -71,6 +71,12 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
 
     //Evacuation
     Route::apiResource('evacuation','EvacuationController');
+    Route::group(['prefix' => 'evacuation'], function () {
+        Route::post("/update_capacity","EvacuationController@update_capacity");
+    });
+
+    //Barangay
+    Route::apiResource('barangay','BarangayController');
 });
 
 

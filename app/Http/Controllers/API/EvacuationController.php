@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Models\Barangay;
 use App\Models\Evacuation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,9 +24,12 @@ class EvacuationController extends Controller
         
         // }
         // return response()->json($evacuation, 200);
-        return response()->json([
-            'data' => Evacuation::where("is_avail",1)->orderBy('created_at', 'desc')->take(15)->get(),
-        ], 200);
+        // $barangay = Barangay::whereIn("name",["Bagong Ilog","Bambang"])->pluck("id");
+        // echo json_encode($barangay);
+        $json = [
+            'data' => Evacuation::where("is_avail",1)->orderBy('created_at', 'desc')->take(15)->get()
+        ];
+        return response()->json($json, 200);
     }
 
     /**
@@ -35,6 +39,37 @@ class EvacuationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {
+        $request->merge(['barangay' => json_decode($request->barangay)]);
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'capacity' => ['required', 'numeric','min:1'],
+            'address' => ['required', 'string', 'max:255'],
+            'barangay' => ['required','array'],
+            'is_avail' => ['required','boolean'],
+        ];
+
+        $response = array('success' => false);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['response'] = $validator->messages();
+        } else {
+            $evac = Evacuation::create([
+                "name" => $request->name,
+                "capacity" => $request->capacity,
+                "address" => $request->address,
+                "barangay" => $request->barangay,
+            ]);
+            $barangay = Barangay::whereIn("name",$request->barangay)->pluck("id");
+            $evac->barangays()->attach($barangay);
+            $response["success"] = true;
+            $response["response"] = $request->all();
+        }
+        return response()->json($response, 200);
+    }
+
+
+    public function update_capacity(Request $request)
     {
         $rules = [
             'capacity' => ['required', 'numeric', 'min:1']
