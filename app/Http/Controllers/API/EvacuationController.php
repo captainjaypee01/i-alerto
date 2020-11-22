@@ -24,7 +24,7 @@ class EvacuationController extends Controller
         // }
         // return response()->json($evacuation, 200);
         return response()->json([
-            'data' => Evacuation::orderBy('created_at', 'desc')->take(15)->get(),
+            'data' => Evacuation::where("is_avail",1)->orderBy('created_at', 'desc')->take(15)->get(),
         ], 200);
     }
 

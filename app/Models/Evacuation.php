@@ -23,6 +23,7 @@ class Evacuation extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     protected $dates = ['created_at', 'updated_at'];
+    protected $with = ['barangays'];
     protected $appends = ['date'];
 
     /*
@@ -30,6 +31,7 @@ class Evacuation extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
 
     public function getAvailableStatusAttribute(){
         Log::info($this->is_avail);
