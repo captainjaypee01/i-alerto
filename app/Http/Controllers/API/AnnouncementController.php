@@ -18,7 +18,7 @@ class AnnouncementController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Announcement::with('evacuations')->orderBy('created_at', 'desc')->take(15)->get(),
+            'data' => Announcement::with(['evacuations','barangays'])->orderBy('created_at', 'desc')->take(15)->get(),
         ], 200);
     }
 

@@ -22,7 +22,7 @@ class Evacuation extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     protected $dates = ['created_at', 'updated_at'];
-    protected $appends = ['full_address','date'];
+    protected $appends = ['date'];
 
     /*
     |--------------------------------------------------------------------------
