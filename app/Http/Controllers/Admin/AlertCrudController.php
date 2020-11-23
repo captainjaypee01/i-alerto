@@ -219,6 +219,9 @@ class AlertCrudController extends CrudController
                 'name' => 'user_id',
                 'entity' => 'user',
                 'attribute' => 'full_name',
+                'attributes' => [
+                    'required' => true,
+                ],
                 'model' => "App\Models\BackpackUser",
                 'options'   => (function ($query) {
                     return $query->orderBy('last_name', 'ASC')->get();
