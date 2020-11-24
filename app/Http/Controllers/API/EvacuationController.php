@@ -32,6 +32,11 @@ class EvacuationController extends Controller
         return response()->json($json, 200);
     }
 
+    public function evacuations()
+    {
+        return response()->json(["evacuations" => Evacuation::where("is_avail" ,1)->pluck("name")], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

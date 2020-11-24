@@ -32,6 +32,7 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
 
     Route::group(['prefix' => 'login/update'], function () {
         Route::post('/update_token','LoginController@update_token');
+        Route::post('/remove_token','LoginController@remove_token');
     });
 
     //Register
@@ -73,6 +74,10 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
     Route::apiResource('evacuation','EvacuationController');
     Route::group(['prefix' => 'evacuation'], function () {
         Route::post("/update_capacity","EvacuationController@update_capacity");
+
+        Route::group(['prefix' => 'get'], function () {
+            Route::get('evacuations','EvacuationController@evacuations');
+        });
     });
 
     //Barangay
