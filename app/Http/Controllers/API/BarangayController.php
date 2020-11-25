@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barangay;
+use App\Models\Evacuation;
 use Illuminate\Http\Request;
 
 class BarangayController extends Controller
@@ -16,7 +17,12 @@ class BarangayController extends Controller
     public function index()
     {
         $barangays = Barangay::pluck("name");
-        return response()->json(['barangays' => $barangays], 200);
+        $evacuations = Evacuation::where("is_avail" ,1)->pluck("name");
+        
+        return response()->json([
+            'barangays' => $barangays,
+            'evacuations' => $evacuations
+        ], 200);
     }
 
     /**

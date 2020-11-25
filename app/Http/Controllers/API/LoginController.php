@@ -42,10 +42,19 @@ class LoginController extends Controller
     }
 
     public function update_token(Request $request){
+        BackpackUser::where('fcm_token',$request->fcm_token)->update(["fcm_token" => null]);
         $user = BackpackUser::find($request->id);
         $user->fcm_token = $request->fcm_token;
         $user->save();
         return response()->json(["success"=>true,"response" => $user->fcm_token], 200);
+    }
+
+    public function remove_token(Request $request)
+    {
+        $user = BackpackUser::find($request->id);
+        $user->fcm_token = NULL;
+        $user->save();
+        return response()->json(["success"=>true,"response" => $user], 200);
     }
 
 }
