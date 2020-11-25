@@ -31,6 +31,14 @@ class Alert extends Model
 
     public function getFullNameWithLinkAttribute()
     {
+        if($this->user){
+            return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->name . '</a>';
+        }
+        else{
+            $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . ' ') . $this->last_name;
+
+            return ucwords($full_name);
+        }
         return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->name . '</a>';
     }
 
@@ -210,6 +218,11 @@ class Alert extends Model
     public function conversations()
     {
         return $this->hasMany(Conversation::class);
+    }
+
+    public function barangay()
+    {
+        return $this->belongsTo(Barangay::class);
     }
     /*
     |--------------------------------------------------------------------------

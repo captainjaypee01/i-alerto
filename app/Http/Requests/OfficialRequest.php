@@ -26,7 +26,8 @@ class OfficialRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'email'    => 'required|unique:'.config('permission.table_names.users', 'users').',email',
+            'contact_number'     => 'required|unique:'.config('permission.table_names.users', 'users').',contact_number',
         ];
     }
 

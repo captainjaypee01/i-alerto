@@ -16,6 +16,10 @@ class CreateAlertsTable extends Migration
         Schema::create('alerts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('barangay_id')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->text('address')->nullable();
