@@ -25,7 +25,7 @@ class AccountInfoRequest extends FormRequest
      */
     public function validationData()
     {
-        return $this->only(backpack_authentication_column(), 'first_name','middle_name', 'last_name');
+        return $this->only(backpack_authentication_column(), 'first_name','middle_name', 'last_name', 'contact_number');
     }
 
     /**
@@ -43,6 +43,7 @@ class AccountInfoRequest extends FormRequest
                 backpack_authentication_column() == 'email' ? 'email' : '',
                 Rule::unique($user->getTable())->ignore($user->getKey(), $user->getKeyName()),
             ],
+            'contact_number' => 'required|unique:'.config('permission.table_names.users', 'users').',contact_number',
             'first_name' => 'required',
             'last_name' => 'required',
         ];

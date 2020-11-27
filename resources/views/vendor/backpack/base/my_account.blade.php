@@ -96,6 +96,16 @@
                                 <input required class="form-control" type="{{ backpack_authentication_column()=='email'?'email':'text' }}" name="{{ $field }}" value="{{ old($field) ? old($field) : $user->$field }}">
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                @php
+                                    $label = 'Contact Number';
+                                    $field = 'contact_number';
+                                @endphp
+                                <label class="required">{{ $label }}</label>
+                                <input required class="form-control" type="text" name="{{ $field }}" value="{{ old($field) ? old($field) : $user->$field }}">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card-footer">
