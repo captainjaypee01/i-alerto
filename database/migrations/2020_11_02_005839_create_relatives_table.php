@@ -21,6 +21,7 @@ class CreateRelativesTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('relationship')->nullable();
             $table->date('birthdate')->nullable();
             $table->text('province')->nullable();
             $table->text('city')->nullable();

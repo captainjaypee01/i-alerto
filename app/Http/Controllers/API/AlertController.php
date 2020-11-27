@@ -29,6 +29,7 @@ class AlertController extends Controller
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->getNameAttribute();
+            $alert_users_info["contact_number"] = $alerts_value->user->contact_number;
             $alert_users_info["latitude"] = $alerts_value->latitude;
             $alert_users_info["longitude"] = $alerts_value->longitude;
             $alert_users_info["address"] = $alerts_value->address;
