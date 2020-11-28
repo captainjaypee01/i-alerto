@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="col col-md-12 col-sm-12">
-            
+
             <form action="{{ route('admin.report.export.alert') }}" class="form-inline my-2 my-lg-0">
                 <div class="card">
                     <div class="card-header">
@@ -23,19 +23,17 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        
+
                             <div class="row">
-                                <div class="col col-md-12 col-sm-12">    
+                                <div class="col col-md-12 col-sm-12">
                                     <div class="form-group mr-2">
                                         <select name="type" class="w-100 form-control" >
-                                            <option value selected>Select Alert Type</option> 
+                                            <option value selected>Select Alert Type</option>
                                             <option value="all">All Types</option>
                                             <option value="fire">Fire</option>
-                                            <option value="accident">Accident</option>
                                             <option value="flood">Flood</option>
-                                            <option value="medical">Medical</option>
-                                            <option value="earthquake">Earthquake</option>
-                                            <option value="typhoon">Typhoon</option>
+                                            <option value="crime">Crime</option>
+                                            <option value="accident">Accident</option>
                                             <option value="others">Others</option>
                                         </select>
                                     </div>
@@ -70,24 +68,24 @@
                                             </select>
                                         </div>
                                         <input type="hidden" name="export" value="1">
-                                    
+
                                 </div>
-                                    
+
                             </div>
-                            
+
                     </div>
                     <div class="card-footer">
-                        
+
                         <div class="form-group float-right">
                             <button type="submit" class="btn btn-success">Export</button>
                         </div>
                     </div>
                 </div>
-            
+
             </form>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col"></div>
     </div>
@@ -105,19 +103,19 @@
   <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/list.css') }}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-      
+
   <!-- CRUD LIST CONTENT - crud_list_styles stack -->
   @stack('crud_list_styles')
 @endsection
 
 @section('after_scripts')
- 
+
     <script src="{{ asset('packages/backpack/crud/js/crud.js') }}"></script>
     <script src="{{ asset('packages/backpack/crud/js/form.js') }}"></script>
     <script src="{{ asset('packages/backpack/crud/js/list.js') }}"></script>
 
     <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
     @stack('crud_list_scripts')
-    
+
 @endsection
 
