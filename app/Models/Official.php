@@ -36,7 +36,7 @@ class Official extends Model
 
     public function getAssignedBarangayAttribute(){
 
-        return $this->assign->name;
+        return $this->assign ? $this->assign->name : 'N/A';
     }
     /*
     |--------------------------------------------------------------------------
