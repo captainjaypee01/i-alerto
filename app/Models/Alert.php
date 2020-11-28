@@ -32,14 +32,13 @@ class Alert extends Model
     public function getFullNameWithLinkAttribute()
     {
         if($this->user){
-            return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->name . '</a>';
+            return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->full_name . '</a>';
         }
         else{
-            $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . ' ') . $this->last_name;
-
+            $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
             return ucwords($full_name);
         }
-        return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->name . '</a>';
+        return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->full_name . '</a>';
     }
 
     public function getStatusMessageAttribute()

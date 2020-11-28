@@ -28,9 +28,9 @@ class Relative extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
     public function getFullNameAttribute(){
-        $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0])) .
-        $this->last_name;
+        $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
         return ucwords($full_name);
     }
 

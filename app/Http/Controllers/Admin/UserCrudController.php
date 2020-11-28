@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use App\Http\Requests\UserStoreCrudRequest as StoreRequest;
 use App\Http\Requests\UserUpdateCrudRequest as UpdateRequest;
+use App\Models\BackpackUser;
 use App\Models\Employee;
 use App\Models\Official;
 use App\Models\Resident;
@@ -112,6 +113,11 @@ class UserCrudController extends CrudController
 
         $result = $this->traitStore();
 
+        if($result && $this->crud->getCurrentEntry()){
+            $user = BackpackUser::find($this->crud->getCurrentEntry()->id);
+            $user->email_verified_at = $this->crud->getCurrentEntry()->created_at;
+            $user->save();
+        }
         if(($result) && $this->crud->getCurrentEntry()->hasRole('resident')==true){
             $resident = Resident::create([
                 'user_id' => $this->crud->getCurrentEntry()->id,

@@ -36,9 +36,32 @@ class BackpackUser extends User
         return $this->email;
     }
 
+    public function getAssignedBarangayAttribute(){
+        if($this->employee)
+            return $this->employee->assign->name;
+
+        if($this->official)
+            return $this->official->assign->name;
+
+        if($this->resident)
+            return $this->resident->assign->name;
+
+        if($this->assign)
+            return $this->assign->name;
+
+        return 'N/A';
+
+    }
+
+    public function getRemoveEvacuationUserAttribute(){
+
+        $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond text-center" onclick="respondEntry(this)" data-route="'. route('admin.evacuation.user.remove', $this->id) .'" data-button-type="respond">Remove</a>';
+
+        return $btnHtml . '<br>' ;//.  $script;
+    }
+
     public function getFullNameAttribute(){
-        $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . ' ') .
-        $this->last_name;
+        $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
         return ucwords($full_name);
     }
 

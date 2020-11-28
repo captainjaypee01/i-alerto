@@ -7,6 +7,7 @@ use App\Models\BackpackUser;
 use App\Models\Employee;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -232,6 +233,7 @@ class EmployeeCrudController extends CrudController
                 'detailed_address' => $this->crud->getCurrentEntry()->detailed_address,
                 'birthdate' => $this->crud->getCurrentEntry()->birthdate,
                 'password' => Hash::make('password'),
+                'email_verified_at' => Carbon::now(),
             ]);//->assignRole('member');
             $user->assignRole('employee');
             Employee::find($this->crud->getCurrentEntry()->id)->update(['user_id' => $user->id]);

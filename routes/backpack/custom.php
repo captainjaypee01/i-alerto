@@ -19,6 +19,7 @@ Route::group([
     Route::crud('relative', 'RelativeCrudController');
     Route::crud('employee', 'EmployeeCrudController');
     Route::crud('evacuation', 'EvacuationCrudController');
+    Route::crud('official', 'OfficialCrudController');
 
     Route::group(['prefix' => 'report' , 'as' => 'report.'], function(){
         Route::get('/generate', 'Report\GenerateReportController@index')->name('generate');
@@ -31,7 +32,12 @@ Route::group([
     Route::group(['prefix' => 'alert', 'as' => 'alert.'], function(){
         Route::patch('/{alert}/response', 'Custom\CustomAlertController@response')->name('response.update');
     });
-    Route::crud('official', 'OfficialCrudController');
+
+    //Custom Route for Evacuation
+    Route::group(['prefix' => 'evacuation', 'as' => 'evacuation.'], function(){
+        Route::post('/{evacuation}/adduser', 'Custom\CustomEvacuationController@addUser')->name('user.add');
+        Route::patch('/{user}/removeuser', 'Custom\CustomEvacuationController@removeUser')->name('user.remove');
+    });
 
     // if not otherwise configured, setup the "my account" routes
     if (config('backpack.base.setup_my_account_routes')) {

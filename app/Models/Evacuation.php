@@ -60,6 +60,10 @@ class Evacuation extends Model
     {
         return $this->belongsToMany(Barangay::class, 'barangay_evacuation');
     }
+
+    public function users(){
+        return $this->hasMany(BackpackUser::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

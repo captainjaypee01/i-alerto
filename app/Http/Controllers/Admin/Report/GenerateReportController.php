@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class GenerateReportController extends Controller
 {
     public function index(){
-        
+
         Log::info('Visit Generate Report page', ['user' => backpack_user()]);
         return view('custom.report.generate',[
-            
+
         ]);
     }
 
@@ -23,32 +23,32 @@ class GenerateReportController extends Controller
 
         $alerts = Alert::whereMonth('created_at', request('month'))->whereYear('created_at', request('year'))->orderBy('created_at', 'asc');//->get();
         $type = request('type');
-        if(request('type')){        
+        if(request('type')){
             if($type != 'all')
                 $alerts->where('type', $type);
         }
-            
+
         Log::alert($type);
-        
+
 
         $alerts = $alerts->get();
         $csv_data = $alerts->reduce(
             function ($data, $collection) {
-                
-                $data[] = [  
-                    $collection->user->name, 
-                    $collection->address, 
-                    $collection->longitude, 
-                    $collection->latitude, 
-                    $collection->status_message, 
-                    $collection->type,  
+
+                $data[] = [
+                    $collection->user->full_name,
+                    $collection->address,
+                    $collection->longitude,
+                    $collection->latitude,
+                    $collection->status_message,
+                    $collection->type,
                     $collection->created_at,
 
                 ];
                 return $data;
             },
             [
-                [ 
+                [
                     trans('Full name'),
                     trans('Address'),
                     trans('Longitude'),
@@ -59,12 +59,12 @@ class GenerateReportController extends Controller
                 ]
             ]
         );
-        
-        
+
+
         $date = Carbon::now()->format('Y-m-d');
         $fileName = Carbon::create()->year(request('year'))->month(request('month'))->format('M Y') . ' Alert List as of ' . $date . '-' . time();
-        
-        
+
+
         Log::info('Generate Export Report', ['user' => backpack_user(), 'filename' => $fileName]);
         // return $response->send();
         return new StreamedResponse(
