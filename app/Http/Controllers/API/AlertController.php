@@ -105,11 +105,13 @@ class AlertController extends Controller
                 $response["has_chat"] = true;
             }
         }
-        else if ($role == "barangay" || $role == "employee"){
+        else if ($role == "official" || $role == "employee"){
             $with_chat = $alert->conversations->where("alert_id",$alert_id)->first();
             if($with_chat){
+                $response["role"] = $with_chat->user->role;
                 $has_chat = $alert->conversations->where("user_id",$user_id)->first();
                 if($has_chat){
+                    $response["role"] = $has_chat->user->role;
                     $response["has_chat"] = true;
                 }
                 else{
