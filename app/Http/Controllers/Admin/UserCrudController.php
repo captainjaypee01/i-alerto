@@ -30,7 +30,7 @@ class UserCrudController extends CrudController
     {
         $this->crud->addColumns([
             [
-                'name'  => 'name',
+                'name'  => 'full_name',
                 'label' => trans('backpack::permissionmanager.name'),
                 'type'  => 'text',
             ],
