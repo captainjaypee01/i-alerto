@@ -18,6 +18,7 @@ class CreateConversationsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('alert_id');
             $table->text("message");
+            $table->boolean('is_image')->default(false)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

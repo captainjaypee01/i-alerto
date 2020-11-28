@@ -136,6 +136,7 @@ class RegisterController extends Controller
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
+            'contact_number' => $request->contact_number,
             'province' => $request->province,
             'city' => $request->city,
             'barangay' => $request->barangay,
