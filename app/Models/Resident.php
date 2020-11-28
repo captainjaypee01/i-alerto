@@ -23,6 +23,8 @@ class Resident extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $with = ["relatives"];
+    protected $appends = ["name"];
 
     /*
     |--------------------------------------------------------------------------
@@ -34,6 +36,14 @@ class Resident extends Model
         $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
         return ucwords($full_name);
     }
+
+    public function getNameAttribute()
+    {
+        $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? ' ' : strtoupper($this->middle_name[0])) .
+        ' '.$this->last_name;
+        return ucwords($full_name);
+    }
+
 
     public function getAssignedBarangayAttribute(){
 

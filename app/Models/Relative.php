@@ -22,6 +22,7 @@ class Relative extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $appends = ["name"];
 
     /*
     |--------------------------------------------------------------------------
@@ -34,10 +35,20 @@ class Relative extends Model
         return ucwords($full_name);
     }
 
+    public function getNameAttribute()
+    {
+        $full_name = $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0])) .
+        ' '.$this->last_name;
+        return ucwords($full_name);
+    }
+
     public function getAssignedBarangayAttribute(){
 
         return $this->assign->name;
     }
+
+    
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -49,7 +60,7 @@ class Relative extends Model
     }
 
     public function resident(){
-        return $this->hasOne(Resident::class);
+        return $this->belongsTo(Resident::class,"resident_id");
     }
 
     public function assign(){

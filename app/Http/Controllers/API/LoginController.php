@@ -19,12 +19,14 @@ class LoginController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 if (!is_null($user->email_verified_at)) {
-                    $role = $user->roles;
-                    $role = $role[0];
-                    $user['name'] = $user->getNameAttribute();
+                    
                     $response["success"] = true;
-                    $response["response"] = $user;
-                    $response["role"] = $role->name;
+                    $role_name = $user->role;
+                    $resident = $user->resident;
+                    $resident["role"] = $role_name;
+                    $response["response"] = $role_name == "resident" ? $user->resident : $user; 
+
+                    
                 }
                 else{
                     $response["response"] = "Your account is not yet verified.";

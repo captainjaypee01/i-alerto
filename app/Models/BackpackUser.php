@@ -13,6 +13,8 @@ class BackpackUser extends User
     use Notifiable;
 
     protected $table = 'users';
+    protected $with = ["resident","roles"];
+    protected $appends = ["name","role"];
 
     /**
      * Send the password reset notification.
@@ -64,6 +66,15 @@ class BackpackUser extends User
         $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
         return ucwords($full_name);
     }
+
+    public function getRoleAttribute()
+    {
+        $role = $this->roles;
+        $role = $role[0];
+        $role_name = $role->name;
+        return $role_name;
+    }
+    
 
     public function assign(){
         return $this->belongsTo(Barangay::class, 'barangay_id');

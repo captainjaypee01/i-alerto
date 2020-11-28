@@ -23,7 +23,21 @@ class RegisterController extends Controller
      */
     public function index()
     {
+        $relative = [];
+        $data = [];
+        $data["first_name"] = "Bryan";
+        $data["middle_name"] = "middlename";
+        $data["last_name"] = "lastname";
+        $data["birthdate"] = "906912000000";
+        $relative[] = $data;
 
+        $data["first_name"] = "josh";
+        $data["middle_name"] = "middlename2";
+        $data["last_name"] = "lastname2";
+        $data["birthdate"] = "906912000000";
+        $relative[] = $data;
+
+        return response()->json($relative, 200);
     }
 
     /**
@@ -44,7 +58,7 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
-            if ($request->has("left_index_fingerprint") && $request->has("right_index_fingerprint")) {
+            if ($request->has("left_index_fingerprint") && $request->has("right_index_fingerprint") && $request->has('selfie_image')) {
                 $name_edited = strtolower($request->first_name."".$request->middle_name."".$request->last_name);
                 $folder = str_replace(' ', '', strtolower($name_edited))."-".$request->birthdate;
                 $left_index_fingerprint_image = "left_index_finger.jpg";
@@ -52,30 +66,39 @@ class RegisterController extends Controller
 
                 $right_index_fingerprint_image = "right_index_finger.jpg";
                 $uploaded2 = $request->right_index_fingerprint->move(public_path("/fingerprint/$folder"), $right_index_fingerprint_image);
-                if($uploaded1 && $uploaded2){
+
+                $selfi_image = "selfie_image.jpg";
+                $uploaded3 = $request->selfie_image->move(public_path("/fingerprint/$folder"), $selfi_image);
+                if($uploaded1 && $uploaded2 && $uploaded3){
                     $verification_code = Str::random(10);
                     $user = $this->store_user($request,$verification_code,$folder);
                     $resident = $this->store_resident($user,$request,$folder);
-                    
+
                     $role = $user->roles;
                     $role = $role[0];
                     
                     unset($user['roles']);
-    
+
                     $res = [
                         "user" => $user,
                         "resident" => $resident
                     ];
+                    $declarations = json_decode($request->declarations);
+                    if(!empty($relatives) || $declarations != null){
+                        $relative = $this->store_relative($resident,$request,$declarations);
+                        $res["relative"] = $relative;
+                    }
+                    
 
                     Mail::to($user->email)->send(new EmailVerification($user));
-    
+
                     $response["success"] = true;
                     $response['response'] = $res;
                     $response["role"] = $role->name;
                 }
             }
             else{
-                $response["response"] = "No Fingerprint";
+                $response["response"] = "No Fingerprint or Selfie Image.";
             }
         }
         return response()->json($response, 200);
@@ -112,6 +135,8 @@ class RegisterController extends Controller
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
             'province' => $request->province,
             'city' => $request->city,
             'barangay' => $request->barangay,
@@ -123,6 +148,33 @@ class RegisterController extends Controller
             'fingerprint' => $folder,
         ]);
         return $resident;
+    }
+
+    public function store_relative($resident,$request,$declarations)
+    {   
+        $barangay = Barangay::where("name",$request->barangay)->first();
+        $relatives = [];
+        foreach($declarations as $declaration)
+        {
+            $details = [];
+            $details["user_id"] = $resident->user_id;
+            $details["resident_id"] = $resident->id;
+            $details["barangay_id"] = $barangay->id;
+            $details["first_name"] = $declaration->firstname;
+            $details["middle_name"] = $declaration->middlename;
+            $details["last_name"] = $declaration->lastname;
+            $details["relationship"] = $declaration->relationship;
+            $details["birthdate"] = Carbon::createFromTimestampMs($declaration->birthdate)->format('Y-m-d');
+            $details["province"] = $request->province;
+            $details["city"] = $request->city;
+            $details["barangay"] = $request->barangay;
+            $details["detailed_address"] = $request->detailed_address;
+            $relatives[] = $details;
+        }
+
+        $barangay = Barangay::where("name",$request->barangay)->first();
+        $relative = $resident->relatives()->createMany($relatives);
+        return $relative;
     }
 
     public function check_first(Request $request)
@@ -233,6 +285,13 @@ class RegisterController extends Controller
         }
         return response()->json($response, 200);
     }
+
+
+    // public function receive_declaration(Request $request)
+    // {
+    //     $declaration = json_decode($request->declarations);
+    //     return response()->json(["success"=>true,"response" => $declaration], 200);
+    // }
 
     public function barangay()
     {

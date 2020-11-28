@@ -37,7 +37,11 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'API'], function () {
 
     //Register
     Route::apiResource('register', 'RegisterController');
+    
 
+    // Route::group(['prefix' => 'register/post'], function () {
+    //     Route::post("/receive_declaration","RegisterController@receive_declaration");
+    // });
     Route::group(['prefix' => 'register/email'], function () {
         Route::post('/resend_code','RegisterController@resend_code');
         Route::post('/verify_account','RegisterController@verify_account');
