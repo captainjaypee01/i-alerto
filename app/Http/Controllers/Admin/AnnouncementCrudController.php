@@ -36,7 +36,13 @@ class AnnouncementCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
+        $this->crud->addColumn([
+            'name' => 'title',
+            'label' => 'Title',
+            'type' => 'text',
+        ]);
+
         $this->crud->addColumn([
             'name' => 'evacuations',
             'label' => 'List of Evacuation Centers',
@@ -48,9 +54,9 @@ class AnnouncementCrudController extends CrudController
             'type' => 'relationship',
         ]);
         $this->crud->addColumn([
-            'name' => 'created_at',
+            'name' => 'mobile_created_at',
             'label' => 'Date Posted',
-            'type' => 'date',
+            'type' => 'datetime',
         ]);
 
         Log::info('Visit Announcement List page', ['user' => backpack_user()]);
@@ -103,7 +109,18 @@ class AnnouncementCrudController extends CrudController
     protected function setupShowOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
+        $this->crud->addColumn([
+            'name' => 'title',
+            'label' => 'Title',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'details',
+            'label' => 'Details',
+            'type' => 'textarea',
+        ]);
+
         $this->crud->addColumn(
         [
             'name' => 'evacuations',
@@ -118,9 +135,9 @@ class AnnouncementCrudController extends CrudController
         ]);
         $this->crud->addColumn(
         [
-            'name' => 'created_at',
+            'name' => 'mobile_created_at',
             'label' => 'Date Posted',
-            'type' => 'date',
+            'type' => 'datetime',
         ]);
 
         Log::info('Visit Announcement Show page', [
