@@ -19,7 +19,7 @@ class Conversation extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['user_id','alert_id','message'];
+    protected $fillable = ['user_id','alert_id','message','image','has_image'];
     // protected $hidden = [];
     protected $dates = ['created_at', 'updated_at'];
     protected $appends = ['name','role','date'];
