@@ -39,8 +39,30 @@ class AlertController extends Controller
             $alert_user[] = $alert_users_info;
         }
 
-    
+        return response()->json([
+            'data' => $alert_user,
+        ], 200);
+    }
+
+    public function my_alerts($id)
+    {
+        $alert_user = [];
+        $alert_users_info = [];
         
+        $alerts = Alert::where("user_id",$id)->orderBy('created_at','desc')->take(15)->get();
+        foreach ($alerts as $alerts_key => $alerts_value) {
+            $alert_users_info["alert_id"] = $alerts_value->id;
+            $alert_users_info["name"] = $alerts_value->getNameAttribute();
+            $alert_users_info["contact_number"] = $alerts_value->user->contact_number;
+            $alert_users_info["latitude"] = $alerts_value->latitude;
+            $alert_users_info["longitude"] = $alerts_value->longitude;
+            $alert_users_info["address"] = $alerts_value->address;
+            $alert_users_info["type"] = $alerts_value->type;
+            $alert_users_info['status'] = $alerts_value->status;
+            $alert_users_info["created_at"] = $alerts_value->getMobileCreatedAtAttribute();
+            $alert_user[] = $alert_users_info;
+        }
+
         return response()->json([
             'data' => $alert_user,
         ], 200);
@@ -235,7 +257,9 @@ class AlertController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'status' => ['required']
+            'status' => ['required'],
+            'auto_reply' => ['required'],
+            'user_id' => ['required']
         ];
 
         $response = array('success' => false);
@@ -243,6 +267,19 @@ class AlertController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
+            $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
+            $message = [];
+            if($req_message != null){
+                $msg = [
+                    'user_id' => $request->user_id,
+                    'alert_id' => $id,
+                    'message' => $req_message,
+                ];
+                $message = Conversation::create($msg);
+            }
+            unset($message['user']);
+            event(new ChatAlert($message,$id));
+
             $alert = Alert::with('user')->get()->find($id);
             // $alert->fill($request->all())->save();
             $alert->update(["status" => $request->status,"responded_at" => Carbon::now()]);
