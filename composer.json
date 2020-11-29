@@ -17,8 +17,12 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
+<<<<<<< HEAD
+        "pusher/pusher-php-server": "~3.0"
+=======
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~4.0"
+>>>>>>> 6038c1ae09c0f8e684768bf73e53d1f185b59a7f
     },
     "require-dev": {
         "backpack/generators": "^3.0",

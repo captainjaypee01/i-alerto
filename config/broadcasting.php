@@ -38,10 +38,6 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => false
-                // 'encrypted' => true,
-                // 'host' => 'ialerto.com',
-                // 'port' => 6001,
-                // 'scheme' => 'http',
             ],
         
         ],

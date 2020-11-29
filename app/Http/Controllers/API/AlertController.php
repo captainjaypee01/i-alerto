@@ -25,7 +25,7 @@ class AlertController extends Controller
         $alert_user = [];
         $alert_users_info = [];
 
-        $alerts = Alert::where("status",0)->orderBy('created_at','desc')->take(15)->get();
+        $alerts = Alert::where("status",0)->has('user')->orderBy('created_at','desc')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->getNameAttribute();
@@ -50,7 +50,7 @@ class AlertController extends Controller
         $alert_user = [];
         $alert_users_info = [];
         
-        $alerts = Alert::where("user_id",$id)->orderBy('created_at','desc')->take(15)->get();
+        $alerts = Alert::where("user_id",$id)->has('user')->orderBy('created_at','desc')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->getNameAttribute();
@@ -71,10 +71,10 @@ class AlertController extends Controller
 
     public function history()
     {
-        $alerts = Alert::orderBy('created_at','desc')->take(15)->get();
+        $alerts = Alert::orderBy('created_at','desc')->has('user')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["id"] = $alerts_value->id;
-            $alert_users_info["alert_user_name"] = $alerts_value->user->getNameAttribute();
+            $alert_users_info["alert_user_name"] = $alerts_value->getNameAttribute();
             $alert_users_info["latitude"] = $alerts_value->latitude;
             $alert_users_info["longitude"] = $alerts_value->longitude;
             $alert_users_info["address"] = $alerts_value->address;
@@ -131,16 +131,16 @@ class AlertController extends Controller
 
     public function conversations()
     {
-        $alert_id = request()->segment(5);
+        $alert_id = request()->segment(6);
         $conv = Conversation::where("alert_id",$alert_id)->get();
         return response()->json($conv, 200);
     }
 
     public function conversation_status()
     {
-        $alert_id = request()->segment(5);
-        $user_id = request()->segment(6);
-        $role = request()->segment(7);
+        $alert_id = request()->segment(6);
+        $user_id = request()->segment(7);
+        $role = request()->segment(8);
         // $conv = Conversation::where('alert_id',$alert_id)->first();
         $alert = Alert::find($alert_id);
         $response = ["is_empty"=>false,"has_chat" => false];
@@ -270,19 +270,20 @@ class AlertController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
-            // $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
-            // $message = [];
-            // if($req_message != null){
-            //     $msg = [
-            //         'user_id' => $request->user_id,
-            //         'alert_id' => $id,
-            //         'message' => $req_message,
-            //     ];
-            //     $message = Conversation::create($msg);
-            // }
+            $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
+            $message = [];
+            if($req_message != null){
+                $msg = [
+                    'user_id' => $request->user_id,
+                    'alert_id' => $id,
+                    'message' => $req_message,
+                ];
+                $message = Conversation::create($msg);
+            }
+            unset($message['user']);
+            event(new ChatAlert($message,$id));
+
             $alert = Alert::with('user')->get()->find($id);
-            // unset($message['user']);
-            // event(new ChatAlert($message,$alert->id));
             // $alert->fill($request->all())->save();
             $alert->update(["status" => $request->status,"responded_at" => Carbon::now()]);
             $response["success"] = true;
