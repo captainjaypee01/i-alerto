@@ -270,6 +270,21 @@ class AlertController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
+
+//           $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
+//            $message = [];
+//            if($req_message != null){
+//               $msg = [
+//                    'user_id' => $request->user_id,
+//                    'alert_id' => $id,
+//                    'message' => $req_message,
+//                ];
+//                $message = Conversation::create($msg);
+//            }
+//            unset($message['user']);
+//            event(new ChatAlert($message,$id));
+
+
             // $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
             // $message = [];
             // if($req_message != null){
@@ -280,6 +295,7 @@ class AlertController extends Controller
             //     ];
             //     $message = Conversation::create($msg);
             // }
+
             $alert = Alert::with('user')->get()->find($id);
             // unset($message['user']);
             // event(new ChatAlert($message,$alert->id));
