@@ -283,7 +283,7 @@ class AlertController extends Controller
             $alert = Alert::with('user')->get()->find($id);
             unset($message['user']);
             event(new ChatAlert($message,$alert->id));
-            $alert->fill($request->all())->save();
+            // $alert->fill($request->all())->save();
             $alert->update(["status" => $request->status,"responded_at" => Carbon::now()]);
             $response["success"] = true;
             $response['response'] = $alert;
