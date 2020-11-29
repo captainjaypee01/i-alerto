@@ -126,7 +126,7 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
             center: [lng, lat], // starting position [lng, lat]
-            zoom: 9 // starting zoom
+            zoom: 12 // starting zoom
         });
         var marker = new mapboxgl.Marker()
                 .setLngLat([lng, lat])
