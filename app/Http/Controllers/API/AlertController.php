@@ -42,6 +42,7 @@ class AlertController extends Controller
         return response()->json([
             'data' => $alert_user,
         ], 200);
+    
     }
 
     public function my_alerts($id)
@@ -197,26 +198,27 @@ class AlertController extends Controller
         else{
             $response["success"] = true;
             $response["response"] = $alert;
-
-
+            
 
             $accounts = BackpackUser::role(['employee','official'])->get();
             $fcm_tokens = [];
             foreach($accounts as $user)
             {
-                $fcm_tokens[] = $user->fcm_token;
+                if($user->fcm_token != null){
+                    $fcm_tokens[] = $user->fcm_token;
+                }
             }
-
+            
+            $data["body"] = $request->address;
+            $data["title"] = "Alert";
+            $data["from_activity"] = "alert_notif";
             $url = 'https://fcm.googleapis.com/fcm/send';
             $fields = array (
                 'registration_ids' => $fcm_tokens,
-                "data" => array(
-                    "body" => $request->address,
-                    "title" => "Alert",
-                    "from_activity" => "alert_notif",
-                ),
+                'data' => $data,
             );
             $fields = json_encode ($fields);
+
             $headers = array (
                 'Authorization: key=' . "AAAAvF1qE-A:APA91bHFsBPdURKVGuqE3IZB7Ztw5REJaRZQl7mpb1lrDuUM0YyYnWHEiZeJpgzKBT0YM4NoAzaznKQE5RnlsB9HdmrjasLRj0HvqGpqwknSOS7eRIg67PyLAbWTAO3RAAeeaTPob2EM",
                 'Content-Type: application/json'
@@ -228,6 +230,7 @@ class AlertController extends Controller
             curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
             curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
             curl_setopt ( $ch, CURLOPT_POSTFIELDS, $fields );
+
             $result = curl_exec ( $ch );
             // echo $result;
             curl_close ( $ch );
@@ -267,20 +270,19 @@ class AlertController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
-            $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
-            $message = [];
-            if($req_message != null){
-                $msg = [
-                    'user_id' => $request->user_id,
-                    'alert_id' => $id,
-                    'message' => $req_message,
-                ];
-                $message = Conversation::create($msg);
-            }
-            unset($message['user']);
-            event(new ChatAlert($message,$id));
-
-            $alert = Alert::with('user')->get()->find($id);
+            // $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
+            // $message = [];
+            // if($req_message != null){
+            //     $msg = [
+            //         'user_id' => $request->user_id,
+            //         'alert_id' => $id,
+            //         'message' => $req_message,
+            //     ];
+            //     $message = Conversation::create($msg);
+            // }
+            // $alert = Alert::with('user')->get()->find($id);
+            // unset($message['user']);
+            // event(new ChatAlert($message,$alert->id));
             // $alert->fill($request->all())->save();
             $alert->update(["status" => $request->status,"responded_at" => Carbon::now()]);
             $response["success"] = true;
