@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Custom;
 
 use App\Http\Controllers\Controller;
 use App\Models\BackpackUser;
+use App\Models\Barangay;
 use App\Models\Evacuation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,6 +12,27 @@ use Prologue\Alerts\Facades\Alert;
 
 class CustomEvacuationController extends Controller
 {
+    public function index(Request $request){
+
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        // Log::info($request);
+        $barangayArray = [];
+        foreach($request->form as $v){
+            if($v['name'] == 'barangays[]')
+                array_push($barangayArray, $v['value']);
+        }
+
+        // if no category has been selected, show no options
+        if (! $form['barangays[]']) {
+            return [];
+        }
+        $evacuations = Evacuation::whereHas('barangays', function ($query) use ($barangayArray){
+            $query->whereIn('barangay_id', $barangayArray);
+        });
+
+        return $evacuations->paginate(10);
+
+    }
     public function addUser(Evacuation $evacuation, Request $request){
         request()->validate([
             'users' => 'required'

@@ -67,20 +67,19 @@ class AnnouncementCrudController extends CrudController
         $this->crud->setValidation(AnnouncementRequest::class);
 
         // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
         $this->crud->addField([
-            'label' => "Set Available Evacuation Centers for Barangays (optional)",
-            'type' => 'select2_multiple',
-            'name' => 'evacuations',
-            'entity' => 'evacuations',
-            'attribute' => 'name',
-            'model' => "App\Models\Evacuation",
-            'pivot' => true,
-            'select_all' => true,
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->get();
-            }),
+            'name' => 'title',
+            'label' => 'Title',
+            'type' => 'text',
         ]);
+
+        $this->crud->addField([
+            'name' => 'details',
+            'label' => 'Details',
+            'type' => 'textarea',
+        ]);
+
         $this->crud->addField([
             'label' => "Barangay",
             'type' => 'select2_multiple',
@@ -88,11 +87,29 @@ class AnnouncementCrudController extends CrudController
             'entity' => 'barangays',
             'attribute' => 'name',
             'model' => "App\Models\Barangay",
-            'pivot' => true,
+            // 'pivot' => true,
             'select_all' => true,
             'options'   => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
+        ]);
+        $this->crud->addField([
+            'label' => "Set Available Evacuation Centers for Barangays (optional)",
+            'type' => 'select2_from_ajax_multiple',
+            'name' => 'evacuations',
+            'entity' => 'evacuations',
+            'attribute' => 'name',
+            'data_source' => url(route('admin.evacuation.barangay.list')),
+            'model' => "App\Models\Evacuation",
+            'placeholder'          => 'Select Evacuations', // placeholder for the select
+            'minimum_input_length' => 0, // minimum characters to type before querying results
+            'dependencies'         => ['barangays'],
+            'include_all_form_fields' => true,
+            // 'pivot' => true,
+            // 'select_all' => true,
+            // 'options'   => (function ($query) {
+            //     return $query->where('is_avail', 1)->orderBy('name', 'ASC')->get();
+            // }),
         ]);
         Log::info('Visit Announcement Create page', ['user' => backpack_user()]);
     }
@@ -121,16 +138,16 @@ class AnnouncementCrudController extends CrudController
             'type' => 'textarea',
         ]);
 
+        $this->crud->addColumn([
+            'name' => 'barangays',
+            'label' => 'List of Barangay',
+            'type' => 'relationship',
+        ]);
+
         $this->crud->addColumn(
         [
             'name' => 'evacuations',
             'label' => 'List of Evacuation Centers',
-            'type' => 'relationship',
-        ]);
-        $this->crud->addColumn(
-        [
-            'name' => 'barangays',
-            'label' => 'List of Barangay',
             'type' => 'relationship',
         ]);
         $this->crud->addColumn(
