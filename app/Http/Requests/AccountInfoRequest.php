@@ -36,14 +36,15 @@ class AccountInfoRequest extends FormRequest
     public function rules()
     {
         $user = backpack_auth()->user();
-
+        $userId = $user->id;
         return [
             backpack_authentication_column() => [
                 'required',
                 backpack_authentication_column() == 'email' ? 'email' : '',
                 Rule::unique($user->getTable())->ignore($user->getKey(), $user->getKeyName()),
             ],
-            'contact_number' => 'required|unique:'.config('permission.table_names.users', 'users').',contact_number',
+            'contact_number'     => 'required|unique:'.config('permission.table_names.users', 'users').',contact_number,'. $userId,
+            // 'contact_number' => ['required', 'contact_number', Rule::unique($user->getTable())->ignore($user->getKey(), $user->getKeyName())],//'required|unique:'.config('permission.table_names.users', 'users').',contact_number',
             'first_name' => 'required',
             'last_name' => 'required',
         ];
