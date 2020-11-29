@@ -74,7 +74,7 @@ class BackpackUser extends User
         $role_name = $role->name;
         return $role_name;
     }
-    
+
 
     public function assign(){
         return $this->belongsTo(Barangay::class, 'barangay_id');

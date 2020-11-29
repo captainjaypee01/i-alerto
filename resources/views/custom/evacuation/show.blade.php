@@ -142,7 +142,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <table id="crudTable" class="table">
+                        <table id="crudTable" class="table w-100">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -151,17 +151,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($evacuationUsers as $user)
-                                <tr>
-                                    <td>{{ $user->full_name }}</td>
-                                    <td>
-                                        {{
-                                            $user->assigned_barangay
-                                        }}
-                                    </td>
-                                    <td>{!! $user->remove_evacuation_user !!}</td>
-                                </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -179,6 +168,9 @@
     <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/form.css') }}">
     <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/list.css') }}">
     <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/create.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')}}">
     <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -188,9 +180,34 @@
 	<script src="{{ asset('packages/backpack/crud/js/crud.js') }}"></script>
     <script src="{{ asset('packages/backpack/crud/js/show.js') }}"></script>
 
+    <!-- DATA TABLES SCRIPT -->
+    <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js')}}"></script>
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     <script>
         $("#user-select2").select2();
+        $("#crudTable").DataTable({
+            responsive: true,
+            "processing": true,
+            // "serverSide": true,
+            "ajax": {
+                "url": "{{ route('admin.evacuation.user.list', $crud->getCurrentEntry()->id) }}",
+                "contentType": "application/json",
+                "type": "GET",
+                "data": function ( d ) {
+                    return JSON.stringify( d );
+                }
+            },
+            "columns": [
+                { "data": "full_name" },
+                { "data": "assigned_barangay" },
+                { "data": "remove_evacuation_user"}
+            ]
+        });
     </script>
     <script>
         if (typeof respondEntry != 'function') {
@@ -226,7 +243,7 @@
                     if (value) {
                         $.ajax({
                             url: route,
-                            type: 'PATCH',
+                            type: 'POST',
                             success: function(result) {
                                 if (result != 1) {
                                     // Show an error alert

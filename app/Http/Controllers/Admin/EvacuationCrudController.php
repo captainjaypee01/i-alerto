@@ -167,8 +167,8 @@ class EvacuationCrudController extends CrudController
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.preview').' '.$this->crud->entity_name;
-        $users = BackpackUser::whereNull('evacuation_id')->orWhere('evacuation_id', '!=',0)->orderBy('last_name', 'asc')->get();
-        $evacuationUsers = BackpackUser::where('evacuation_id', $id)->get();
+        $users = BackpackUser::whereNull('evacuation_id')->orderBy('last_name', 'asc')->get();
+        $evacuationUsers = $this->crud->getCurrentEntry()->users;
         $this->data['users'] = $users;
         $this->data['evacuationUsers'] = $evacuationUsers;
 

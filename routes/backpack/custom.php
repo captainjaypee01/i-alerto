@@ -35,8 +35,9 @@ Route::group([
 
     //Custom Route for Evacuation
     Route::group(['prefix' => 'evacuation', 'as' => 'evacuation.'], function(){
+        Route::get('/{evacuation}/userList', 'Custom\CustomEvacuationController@userList')->name('user.list');
         Route::post('/{evacuation}/adduser', 'Custom\CustomEvacuationController@addUser')->name('user.add');
-        Route::patch('/{user}/removeuser', 'Custom\CustomEvacuationController@removeUser')->name('user.remove');
+        Route::post('/{user}/removeuser', 'Custom\CustomEvacuationController@removeUser')->name('user.remove');
     });
 
     // if not otherwise configured, setup the "my account" routes
