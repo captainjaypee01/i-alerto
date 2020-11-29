@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\View\Composers;
+namespace App\View\Composers;
 
 use App\Charts\DashboardChart;
 use App\Models\Announcement;

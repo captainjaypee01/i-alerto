@@ -37,10 +37,18 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
+<<<<<<< HEAD
                 'encrypted' => true,
                 'host' => 'ialerto.com',
                 'port' => 6001,
                 'scheme' => 'https',
+=======
+                'useTLS' => false
+                // 'encrypted' => true,
+                // 'host' => 'ialerto.com',
+                // 'port' => 6001,
+                // 'scheme' => 'http',
+>>>>>>> 6038c1ae09c0f8e684768bf73e53d1f185b59a7f
             ],
         
         ],

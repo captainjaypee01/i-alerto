@@ -25,15 +25,24 @@ class AlertCrudController extends CrudController
         $this->crud->setModel('App\Models\Alert');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/alert');
         $this->crud->setEntityNameStrings('alert', 'alerts');
+        $this->crud->setShowView('custom.alert.show');
+        $this->crud->setListView('custom.alert.list');
+
+        $this->crud->orderBy('created_at','desc');
+        if(backpack_user()->hasRole('resident') && backpack_user()->resident !== null){
+            $this->crud->addClause("whereUserId", backpack_user()->id);
+            $this->crud->denyAccess(['create', 'update', 'delete']);
+        }
+
     }
 
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         // $this->crud->setFromDb();
-        
-        if(backpack_user()->hasRole('user'))
-            $this->crud->denyAccess(['update', 'delete']);    
+
+        if(backpack_user()->hasRole('resident'))
+            $this->crud->denyAccess(['update', 'delete']);
 
         $this->crud->setColumns([
             [
@@ -42,22 +51,24 @@ class AlertCrudController extends CrudController
                 'type' => "model_function",
                 'function_name' => 'getFullNameWithLinkAttribute',
                 'limit' => 100,
-            ], 
+            ],
             [
                 'name' => 'address',
                 'label' => "Address",
                 'type' => 'text'
-            ], 
+            ],
             [
                 'name' => 'type',
-                'label' => "Type of Disaster",
-                'type' => 'text',
+                'label' => "Type of Alert",
+                'type' => 'model_function',
+                'limit' => 150,
+                'function_name' => 'getDisasterTypeAttribute',
             ],
             [
                 'name' => 'longitude',
                 'label' => "Longitude",
                 'type' => 'text',
-                'visibleInTable' => true,
+                'visibleInTable' => false,
                 'visibleInModal' => true,
                 'visibleInExport' => false,
                 'visibleInShow' => true,
@@ -66,7 +77,7 @@ class AlertCrudController extends CrudController
                 'name' => 'latitude',
                 'label' => "Latitude",
                 'type' => 'text',
-                'visibleInTable' => true,
+                'visibleInTable' => false,
                 'visibleInModal' => true,
                 'visibleInExport' => false,
                 'visibleInShow' => true,
@@ -77,7 +88,14 @@ class AlertCrudController extends CrudController
                 'type' => "model_function",
                 'function_name' => 'getRespondStatusWithButton',
                 'limit' => 10000,
-            ], 
+            ],
+            [
+                'name' => "map",
+                'label' => "Show Map",
+                'type' => "model_function",
+                'function_name' => 'showMap',
+                'limit' => 10000,
+            ],
             [
                 'name' => 'created_at',
                 'label' => 'Date Alerted',
@@ -85,10 +103,10 @@ class AlertCrudController extends CrudController
                 'format' => 'D MMM Y, hh:mm A',
             ],
         ]);
-        
+
         $this->crud->orderBy('created_at', 'desc');
 
-        
+
         if(backpack_user()->hasRole('administrator') || backpack_user()->hasRole('employee')) {
             $this->crud->addFilter([
                 'name' => 'user_id',
@@ -114,7 +132,7 @@ class AlertCrudController extends CrudController
                     $this->crud->addClause('where', 'created_at', '<=', $dates->to . ' 23:59:59');
             }
         );
-        
+
         $this->crud->addFilter([
             'name' => 'status',
             'type' => 'select2',
@@ -124,6 +142,184 @@ class AlertCrudController extends CrudController
         }, function($value){
             $this->crud->addClause('where', 'status', $value);
         });
+
+        $this->crud->addFilter([
+            'name' => 'type',
+            'type' => 'select2',
+            'label' => 'Alert Type',
+        ], function (){
+            return ['fire' => 'Fire','flood' => "Flood",'accident' => 'Accident','crime' => "Crime", 'others' => "Others"];
+        }, function($value){
+            $this->crud->addClause('where', 'type', $value);
+        });
+    }
+
+    protected function setupShowOperation(){
+        if($this->crud->getCurrentEntry()->user){
+
+            $this->crud->addColumn([
+                'name' => "user_id",
+                'label' => "User",
+                'type' => "model_function",
+                'function_name' => 'getFullNameWithLinkAttribute',
+                'limit' => 100,
+                'visibleInTable' => false,
+                'visibleInModal' => true,
+                'visibleInExport' => false,
+                'visibleInShow' => true,
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'first_name',
+                'label' => "First name",
+                'type' => 'text',
+                'visibleInTable' => false,
+                'visibleInModal' => false,
+                'visibleInExport' => false,
+                'visibleInShow' => false,
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'middle_name',
+                'label' => "Middle Name",
+                'type' => 'text',
+                'visibleInTable' => false,
+                'visibleInModal' => false,
+                'visibleInExport' => false,
+                'visibleInShow' => false,
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'last_name',
+                'label' => "Last Name",
+                'type' => 'text',
+                'visibleInTable' => false,
+                'visibleInModal' => false,
+                'visibleInExport' => false,
+                'visibleInShow' => false,
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'barangay_id',
+                'label' => "Assigned Barangay",
+                'type' => 'relationship',
+                'visibleInTable' => false,
+                'visibleInModal' => false,
+                'visibleInExport' => false,
+                'visibleInShow' => false,
+            ]);
+        }
+        else{
+
+            $this->crud->addColumn([
+                'name' => "user_id",
+                'label' => "User",
+                'type' => "text",
+                'visibleInTable' => false,
+                'visibleInModal' => true,
+                'visibleInExport' => false,
+                'visibleInShow' => false,
+            ]);
+            $this->crud->addColumn([
+                'name' => 'first_name',
+                'label' => "First name",
+                'type' => 'text'
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'middle_name',
+                'label' => "Middle Name",
+                'type' => 'text'
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'last_name',
+                'label' => "Last Name",
+                'type' => 'text'
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'barangay',
+                'label' => "Assigned Barangay",
+                'type' => 'relationship',
+            ]);
+
+            $this->crud->addColumn([
+                'name' => 'barangay_id',
+                'label' => "Assigned Barangay",
+                'type' => 'relationship',
+                'visibleInTable' => false,
+                'visibleInModal' => false,
+                'visibleInExport' => false,
+                'visibleInShow' => false,
+            ]);
+
+        }
+
+
+        $this->crud->addColumn([
+            'name' => 'address',
+            'label' => "Address",
+            'type' => 'text',
+            'visibleInTable' => false,
+            'visibleInModal' => true,
+            'visibleInExport' => false,
+            'visibleInShow' => true,
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'latitude',
+            'label' => 'Latitude',
+            'type' => 'text',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'longitude',
+            'label' => 'Longitude',
+            'type' => 'text',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'type',
+            'label' => "Type of Alert",
+            'type' => 'model_function',
+            'limit' => 150,
+            'function_name' => 'getDisasterTypeAttribute',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'accident_type',
+            'label' => 'Others',
+            'type' => 'text',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => "status",
+            'label' => "Respond Status",
+            'type' => "model_function",
+            'function_name' => 'getStatusMessageAttribute',
+            'limit' => 10000,
+            'visibleInTable' => false,
+            'visibleInModal' => true,
+            'visibleInExport' => false,
+            'visibleInShow' => true,
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'responded_at',
+            'label' => 'Time of Responded ',
+            'type' => 'datetime_picker',
+            'format' => 'D MMM Y, hh:mm A',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'created_at',
+            'label' => 'Date Alerted',
+            'type' => 'datetime_picker',
+            'format' => 'D MMM Y, hh:mm A',
+        ]);
+
+
     }
 
     protected function setupCreateOperation()
@@ -131,7 +327,130 @@ class AlertCrudController extends CrudController
         $this->crud->setValidation(AlertRequest::class);
 
         // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
+
+        if (backpack_user()->hasAnyRole('administrator|official|employee')) {
+
+            $this->crud->addField([
+                'name' => 'first_name',
+                'type' => 'text',
+                'label' => "First Name",
+            ]);
+
+            $this->crud->addField([
+                'name' => 'middle_name',
+                'type' => 'text',
+                'label' => "Middle Name",
+            ]);
+
+            $this->crud->addField([
+                'name' => 'last_name',
+                'type' => 'text',
+                'label' => "Last Name",
+            ]);
+
+            $this->crud->addField([
+                'label' => "Assigned Barangay",
+                'type' => 'select2',
+                'name' => 'barangay_id',
+                'entity' => 'barangay',
+                'attribute' => 'name',
+                'model' => "App\Models\Barangay",
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+            ]);
+
+            // $this->crud->addField([
+            //     'label' => "User",
+            //     'type' => 'select2',
+            //     'name' => 'user_id',
+            //     'entity' => 'user',
+            //     'attribute' => 'full_name',
+            //     'attributes' => [
+            //         'required' => true,
+            //     ],
+            //     'model' => "App\Models\BackpackUser",
+            //     'options'   => (function ($query) {
+            //         return $query->orderBy('last_name', 'ASC')->get();
+            //     }),
+            // ]);
+        }
+        else{
+            $this->crud->addField([
+                'name' => 'user_id',
+                'type' => 'hidden',
+                'value' => backpack_user()->id,
+            ]);
+        }
+        $this->crud->addField([
+            'name' => 'type',
+            'type' => 'select2_from_array',
+            'label' => 'Alert Type',
+            'options' => ['fire' => 'Fire','flood' => "Flood",'accident' => 'Accident','crime' => "Crime", 'others' => "Others"],
+            'allows_null' => null,
+            'default' => 'fire',
+        ]);
+        $this->crud->addField([
+            'name' => 'accident_type',
+            'type' => 'select2_from_array',
+            'label' => 'Accident Type for Others (optional)',
+            'options' => ['car' => 'Car','road' => "Road",'fatal' => 'Fatal', 'others' => "Others"],
+            'allows_null' => true,
+            'default' => '',
+        ]);
+        $this->crud->addField([
+            'name' => 'address',
+            'type' => 'text',
+            'label' => "Address",
+        ]);
+
+        $this->crud->addField([
+            'name' => 'latitude',
+            'type' => 'text',
+            'label' => "Latitude",
+        ]);
+
+        $this->crud->addField([
+            'name' => 'longitude',
+            'type' => 'text',
+            'label' => "Longitude",
+        ]);
+
+        $this->crud->addField([
+            'name'        => 'status',
+            'label'       => "Respond Status?",
+            'type'        => 'select2_from_array',
+            'options'     => [0 => 'Not Responded', 1 => 'Responded'],
+            'allows_null' => false,
+            'default'     => 0,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'responded_at',
+            'label' => 'Time of Responded',
+            'type' => 'datetime_picker',
+                // optional:
+            'datetime_picker_options' => [
+                'format' => 'DD/MM/YYYY h:m A',
+                'language' => 'en'
+            ],
+            'allows_null' => true,
+
+        ]);
+
+        $this->crud->addField([
+            'name' => 'created_at',
+            'label' => 'Date of Alert',
+            'type' => 'datetime_picker',
+                // optional:
+            'datetime_picker_options' => [
+                'format' => 'DD/MM/YYYY h:m A',
+                'language' => 'en'
+            ],
+            'allows_null' => true,
+
+        ]);
     }
 
     protected function setupUpdateOperation()

@@ -17,10 +17,10 @@ class ViewServiceProvider extends ServiceProvider
         // Using class based composers...
         View::composer(
             backpack_view('dashboard'),
-            'App\Http\View\Composers\DashboardComposer'
+            'App\View\Composers\DashboardComposer'
         );
     }
-
+    
     /**
      * Register the service provider.
      *

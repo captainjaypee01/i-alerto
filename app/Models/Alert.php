@@ -31,7 +31,14 @@ class Alert extends Model
 
     public function getFullNameWithLinkAttribute()
     {
-        return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->name . '</a>';
+        if($this->user){
+            return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->full_name . '</a>';
+        }
+        else{
+            $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
+            return ucwords($full_name);
+        }
+        return '<a href="'. route('user.edit', $this->user) .'" target="_blank">' . $this->user->full_name . '</a>';
     }
 
     public function getStatusMessageAttribute()
@@ -51,16 +58,16 @@ class Alert extends Model
         $respond = $this->status;
         $btnHtml = '';
         if($respond == 0)
-            $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond btn-link text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond"><span class="fa fa-reply"></span></a>';
-        else 
-            $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond btn-link text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond"><span class="fa fa-times"></span></a>';
-        
+            $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message . '</a>';
+        else
+            $btnHtml = '<a href="javascript:void(0)" class="btn btn-success btn-sm btn-respond text-center" onclick="respondEntry(this)" data-status="'. $this->status .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="respond">'. $this->status_message .'</a>';
+
 
         $script = '
         <script>
             if (typeof respondEntry != \'function\') {
                 $("[data-button-type=respond]").unbind(\'click\');
-        
+
                 function respondEntry(button) {
                 // ask for confirmation before deleting an item
                 // e.preventDefault();
@@ -68,7 +75,7 @@ class Alert extends Model
                 var route = button.attr(\'data-route\');
                 var status = button.attr(\'data-status\') == 1 ? "Not Responded" : "Responded";
                 var row = $("#crudTable a[data-route=\'"+route+"\']").closest(\'tr\');
-                
+
                 swal({
                     title: "Warning",
                     text: "Are you sure you want to change the status to \"" + status + "\"?",
@@ -112,16 +119,17 @@ class Alert extends Model
                                             timer: 4000,
                                             buttons: false,
                                         });
-            
+
                                         // Hide the modal, if any
                                         $(\'.modal\').modal(\'hide\');
 
                                         $("#crudTable").DataTable().ajax.reload();
-            
+
                                     }
                                 },
                                 error: function(result) {
                                     // Show an alert with the result
+                                    console.log(result);
                                     swal({
                                         title: "NOT updated",
                                         text: "There\'s been an error. Your item might not have been updated.",
@@ -133,17 +141,69 @@ class Alert extends Model
                             });
                         }
                     });
-        
+
                 }
             }
-        
-  
+
+
         </script>';
-        
-        return $btnHtml . '<br>' . $this->status_message .  $script;
+
+        return $btnHtml . '<br>' .  $script;
 
     }
-    
+
+    public function showMap(){
+        $btnHtml = '<a href="javascript:void(0)" class="btn btn-info btn-sm btn-map text-center" data-toggle="modal" data-target="#mapModal" onclick="mapEntry(this)" data-lat="'. $this->latitude .'" data-lng="'. $this->longitude .'" data-route="'. backpack_url('alert/' . $this->id) .'" data-button-type="map">Show Map</a>';
+
+        $script = '
+            <script>
+
+            </script>';
+        $script .=  '<script>
+            if (typeof mapEntry != \'function\') {
+                $("[data-button-type=map]").unbind(\'click\');
+
+                function mapEntry(button) {
+                    // ask for confirmation before deleting an item
+                    // e.preventDefault();
+                    var button = $(button);
+                    var route = button.attr(\'data-route\');
+                    const lat = button.attr(\'data-lat\');
+                    const lng = button.attr(\'data-lng\');
+                    var row = $("#crudTable a[data-route=\'"+route+"\']").closest(\'tr\');
+
+                    mapboxgl.accessToken = "pk.eyJ1IjoiYnJ5YW5iZXJuYXJkbzI4IiwiYSI6ImNrMTJnODZoajAxN3Izb202YzdnbXdiM2kifQ.rBaatfV0jYq0tQIB-qHwmA";
+
+                    var map = new mapboxgl.Map({
+                        container: "map",
+                        style: "mapbox://styles/mapbox/streets-v11",
+                        center: [lng, lat], // starting position [lng, lat]
+                        zoom: 12 // starting zoom
+                    });
+                    var marker = new mapboxgl.Marker()
+                            .setLngLat([lng, lat])
+                            .addTo(map);
+
+
+                }
+            }
+
+
+        </script>';
+        return $btnHtml . $script;
+    }
+
+    public function getDisasterTypeAttribute(){
+        if($this->type == 'accident'){
+            return '<span class="text-capitalize">'. $this->accident_type . ' ' . $this->type .'</span>';
+        }
+
+        return '<span class="text-capitalize">'. $this->type .'</span>';
+    }
+
+    public function getCreatedDateFormatAttribute(){
+        return $this->created_at->format('F, d Y');
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -152,6 +212,16 @@ class Alert extends Model
     public function user()
     {
         return $this->belongsTo(BackpackUser::class);
+    }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
+    public function barangay()
+    {
+        return $this->belongsTo(Barangay::class);
     }
     /*
     |--------------------------------------------------------------------------
@@ -173,6 +243,14 @@ class Alert extends Model
     public function getMobileRespondedAtAttribute()
     {
         return $this->responded_at != null ? $this->responded_at->format('M d,Y h:i A') : "N/A";
+    }
+
+    public function getNameAttribute()
+    {
+        $name = $this->user->first_name." ".$this->user->middle_name." ".$this->user->last_name;
+        $name = str_replace(" "," ",$name);
+        $name = trim($name);
+        return $name;
     }
 
     /*
