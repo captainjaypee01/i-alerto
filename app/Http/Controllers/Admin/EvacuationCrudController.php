@@ -53,7 +53,11 @@ class EvacuationCrudController extends CrudController
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
         CRUD::addColumn(['name' => 'name', 'type' => 'text']);
-        CRUD::addColumn(['name' => 'capacity', 'type' => 'text']);
+        CRUD::addColumn([
+            'name' => 'capacity',
+            'type' => 'model_function',
+            'function_name' => 'getCapacityCountAttribute',
+            'limit' => 1000]);
         CRUD::addColumn(['name' => 'barangays', 'type' => 'relationship']);
         CRUD::addColumn([
             'name' => 'is_avail',
@@ -74,7 +78,11 @@ class EvacuationCrudController extends CrudController
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
         CRUD::addColumn(['name' => 'name', 'type' => 'text']);
-        CRUD::addColumn(['name' => 'capacity', 'type' => 'text']);
+        CRUD::addColumn([
+            'name' => 'capacity',
+            'type' => 'model_function',
+            'function_name' => 'getCapacityCountAttribute',
+            'limit' => 1000]);
         CRUD::addField(['name' => 'address', 'type' => 'text']);
         CRUD::addColumn(['name' => 'barangays', 'type' => 'relationship']);
         CRUD::addColumn([

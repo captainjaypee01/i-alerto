@@ -40,6 +40,16 @@ class Evacuation extends Model
         return '<span class="badge badge-'. $colorBadge . '">' . $text  . '</span>';
     }
 
+    public function getCapacityCountAttribute(){
+        $status = 'success';
+        $userCount = count($this->users);
+        if($userCount >= $this->capacity){
+            $status = 'danger';
+        }
+        $html = '<span class="badge badge-' . $status . '">' . $userCount . ' / ' . $this->capacity . '</span>';
+        return $html;
+    }
+
     public function getMobileCreatedAtAttribute()
     {
         return $this->created_at->format('M d,Y h:i A');
