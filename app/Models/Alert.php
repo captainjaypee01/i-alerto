@@ -247,18 +247,9 @@ class Alert extends Model
 
     public function getNameAttribute()
     {
-        $name = "";
-        if($this->user){
-            $name = $this->user->first_name." ".$this->user->middle_name." ".$this->user->last_name;
-            $name = str_replace(" "," ",$name);
-            $name = trim($name);
-        }
-        else{
-            $name = $this->first_name." ".$this->middle_name." ".$this->last_name;
-            $name = str_replace(" "," ",$name);
-            $name = trim($name);
-        }
-        
+        $name = $this->user->first_name." ".$this->user->middle_name." ".$this->user->last_name;
+        $name = str_replace(" "," ",$name);
+        $name = trim($name);
         return $name;
     }
 

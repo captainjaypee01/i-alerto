@@ -25,7 +25,7 @@ class AlertController extends Controller
         $alert_user = [];
         $alert_users_info = [];
 
-        $alerts = Alert::where("status",0)->orderBy('created_at','desc')->take(15)->get();
+        $alerts = Alert::where("status",0)->has('user')->orderBy('created_at','desc')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->getNameAttribute();
@@ -50,7 +50,7 @@ class AlertController extends Controller
         $alert_user = [];
         $alert_users_info = [];
         
-        $alerts = Alert::where("user_id",$id)->orderBy('created_at','desc')->take(15)->get();
+        $alerts = Alert::where("user_id",$id)->has('user')->orderBy('created_at','desc')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["alert_id"] = $alerts_value->id;
             $alert_users_info["name"] = $alerts_value->getNameAttribute();
@@ -71,7 +71,7 @@ class AlertController extends Controller
 
     public function history()
     {
-        $alerts = Alert::orderBy('created_at','desc')->take(15)->get();
+        $alerts = Alert::orderBy('created_at','desc')->has('user')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["id"] = $alerts_value->id;
             $alert_users_info["alert_user_name"] = $alerts_value->getNameAttribute();
