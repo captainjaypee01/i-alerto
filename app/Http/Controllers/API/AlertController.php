@@ -270,16 +270,12 @@ class AlertController extends Controller
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
         } else {
-            $req_message = empty($request->auto_reply) ? NULL : $request->auto_reply;
-            $message = [];
-            if($req_message != null){
-                $msg = [
-                    'user_id' => $request->user_id,
-                    'alert_id' => $id,
-                    'message' => $req_message,
-                ];
-                $message = Conversation::create($msg);
-            }
+            $msg = [
+                'user_id' => $request->user_id,
+                'alert_id' => $id,
+                'message' => $request->auto_reply,
+            ];
+            $message = Conversation::create($msg);
             unset($message['user']);
             event(new ChatAlert($message,$id));
 
