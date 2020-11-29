@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /public/fingerprint
+/public/chat/images
 /storage/*.key
 /vendor
 .env

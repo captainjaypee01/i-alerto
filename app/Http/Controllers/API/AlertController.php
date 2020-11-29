@@ -72,11 +72,33 @@ class AlertController extends Controller
 
     public function chat(Request $request)
     {
-        $message = Conversation::create([
-                                    'user_id' => $request->user_id,
-                                    'alert_id' => $request->alert_id,
-                                    'message' => $request->message
-                                ]);
+        $has_image = intval($request->has_image) == 1 ? 1 : 0;
+        $user_id = $request->user_id;
+        $alert_id = $request->alert_id;
+        $response = [];
+        $req_message = empty($request->message) ? NULL : $request->message;
+        $message = [];
+        if($req_message != null){
+            $msg = [
+                'user_id' => $user_id,
+                'alert_id' => $alert_id,
+                'message' => $req_message,
+            ];
+            $message = Conversation::create($msg);
+        }
+        // $response["message"] = $message;
+        if($has_image){
+            $image_name = $request->user_id."-".$request->alert_id."-".now()->timestamp.".jpg";
+            $request->disaster_image->move(public_path("/chat/images"), $image_name);
+            $img = [
+                'user_id' => $user_id,
+                'alert_id' => $alert_id,
+                'image' => $image_name,
+                'has_image' => $has_image
+            ];
+            $message = Conversation::create($img);
+            // $response["image"] = $image;
+        }
         unset($message['user']);
         event(new ChatAlert($message,$request->alert_id));
         // return response()->json($message,200);
