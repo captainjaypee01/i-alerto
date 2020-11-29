@@ -280,7 +280,7 @@ class AlertController extends Controller
             //     ];
             //     $message = Conversation::create($msg);
             // }
-            // $alert = Alert::with('user')->get()->find($id);
+            $alert = Alert::with('user')->get()->find($id);
             // unset($message['user']);
             // event(new ChatAlert($message,$alert->id));
             // $alert->fill($request->all())->save();
