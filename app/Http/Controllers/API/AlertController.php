@@ -131,16 +131,16 @@ class AlertController extends Controller
 
     public function conversations()
     {
-        $alert_id = request()->segment(5);
+        $alert_id = request()->segment(6);
         $conv = Conversation::where("alert_id",$alert_id)->get();
         return response()->json($conv, 200);
     }
 
     public function conversation_status()
     {
-        $alert_id = request()->segment(5);
-        $user_id = request()->segment(6);
-        $role = request()->segment(7);
+        $alert_id = request()->segment(6);
+        $user_id = request()->segment(7);
+        $role = request()->segment(8);
         // $conv = Conversation::where('alert_id',$alert_id)->first();
         $alert = Alert::find($alert_id);
         $response = ["is_empty"=>false,"has_chat" => false];
