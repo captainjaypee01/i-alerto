@@ -29619,7 +29619,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'socket.io',
-  host: window.location.hostname + ':6004'
+  host: window.location.hostname + ':6001'
 });
 
 /***/ }),
@@ -29642,8 +29642,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/i-alerto/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/i-alerto/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /mnt/d/bryan/Documents/projects/i-alerto/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /mnt/d/bryan/Documents/projects/i-alerto/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ }),
