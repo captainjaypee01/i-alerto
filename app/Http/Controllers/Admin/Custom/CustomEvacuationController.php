@@ -12,6 +12,9 @@ use Prologue\Alerts\Facades\Alert;
 class CustomEvacuationController extends Controller
 {
     public function addUser(Evacuation $evacuation, Request $request){
+        request()->validate([
+            'users' => 'required'
+        ]);
         $users = BackpackUser::whereIn('id', $request->users)->update(['evacuation_id' => $evacuation->id]);//->get();
 
         Alert::success('Successfully Added')->flash();

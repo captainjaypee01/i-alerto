@@ -90,6 +90,20 @@
 </div>
 
 <div class="row">
+
+    @if ($errors->count())
+    <div class="col-md-8">
+        <div class="alert alert-danger">
+            <ul class="mb-1">
+                @foreach ($errors->all() as $e)
+                <li>{{ $e }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    @endif
+</div>
+<div class="row">
     <div class="col">
         <div class="card">
             <div class="card-header">
