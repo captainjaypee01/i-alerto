@@ -74,7 +74,7 @@ class AlertController extends Controller
         $alerts = Alert::orderBy('created_at','desc')->take(15)->get();
         foreach ($alerts as $alerts_key => $alerts_value) {
             $alert_users_info["id"] = $alerts_value->id;
-            $alert_users_info["alert_user_name"] = $alerts_value->user->getNameAttribute();
+            $alert_users_info["alert_user_name"] = $alerts_value->getNameAttribute();
             $alert_users_info["latitude"] = $alerts_value->latitude;
             $alert_users_info["longitude"] = $alerts_value->longitude;
             $alert_users_info["address"] = $alerts_value->address;
