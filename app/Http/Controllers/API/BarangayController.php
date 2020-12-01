@@ -17,11 +17,11 @@ class BarangayController extends Controller
     public function index()
     {
         $barangays = Barangay::pluck("name");
-        $evacuations = Evacuation::where("is_avail" ,1)->pluck("name");
+        // $evacuations = Evacuation::where("is_avail" ,1)->pluck("name");
         
         return response()->json([
             'barangays' => $barangays,
-            'evacuations' => $evacuations
+            // 'evacuations' => $evacuations
         ], 200);
     }
 

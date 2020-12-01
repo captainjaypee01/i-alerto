@@ -37,6 +37,15 @@ class EvacuationController extends Controller
         return response()->json(["evacuations" => Evacuation::where("is_avail" ,1)->pluck("name")], 200);
     }
 
+    public function getEvacuationByBarangay(Request $request)
+    {
+        $barangays = json_decode($request->barangays);
+        $evacs = Evacuation::where("is_avail" ,1)->whereHas('barangays',function($q) use($barangays) {
+            $q->whereIn("name",$barangays);
+        })->pluck("name");
+        return response()->json(["evacuations" => $evacs], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
