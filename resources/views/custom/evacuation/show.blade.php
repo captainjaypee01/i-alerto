@@ -103,11 +103,12 @@
     </div>
     @endif
 </div>
+
 <div class="row">
     <div class="col">
         <div class="card">
             <div class="card-header">
-                Add User
+                Add Registered User
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('admin.evacuation.user.add', $crud->getCurrentEntry()->id) }}" class="my-2 my-lg-0">
@@ -147,6 +148,59 @@
     </div>
 </div>
 
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Add Unregistered User
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.evacuation.user.add.unregistered', $crud->getCurrentEntry()->id) }}" class="my-2 my-lg-0">
+
+                    {!! csrf_field() !!}
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            @php
+                                $label = 'First Name';
+                                $field = 'first_name';
+                            @endphp
+                            <label class="required">{{ $label }}</label>
+                            <input required class="form-control" type="text" name="{{ $field }}" >
+                        </div>
+                        <div class="col-md-4 form-group">
+                            @php
+                                $label = 'Middle Name';
+                                $field = 'middle_name';
+                            @endphp
+                            <label class="">{{ $label }}</label>
+                            <input class="form-control" type="text" name="{{ $field }}" >
+                        </div>
+                        <div class="col-md-4 form-group">
+                            @php
+                                $label = 'Last Name';
+                                $field = 'last_name';
+                            @endphp
+                            <label class="required">{{ $label }}</label>
+                            <input required class="form-control" type="text" name="{{ $field }}" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">
+                                    <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
+                                    <span data-value="save_and_back">Add and Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col">
         <div class="card">
@@ -155,12 +209,37 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col">
+                    <div class="col col-md-12">
                         <table id="crudTable" class="table w-100">
                             <thead>
                                 <tr>
                                     <th>Name</th>
                                     <th>Assigned Barangay</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                List of Unregistered Users
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col col-md-12">
+                        <table id="crudTable2" class="table w-100">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -219,6 +298,23 @@
             "columns": [
                 { "data": "full_name" },
                 { "data": "assigned_barangay" },
+                { "data": "remove_evacuation_user"}
+            ]
+        });
+        $("#crudTable2").DataTable({
+            responsive: true,
+            "processing": true,
+            // "serverSide": true,
+            "ajax": {
+                "url": "{{ route('admin.evacuation.user.list.unregister', $crud->getCurrentEntry()->id) }}",
+                "contentType": "application/json",
+                "type": "GET",
+                "data": function ( d ) {
+                    return JSON.stringify( d );
+                }
+            },
+            "columns": [
+                { "data": "full_name" },
                 { "data": "remove_evacuation_user"}
             ]
         });
@@ -282,6 +378,7 @@
                                     $('.modal').modal('hide');
 
                                     $("#crudTable").DataTable().ajax.reload();
+                                    $("#crudTable2").DataTable().ajax.reload();
 
                                 }
                             },

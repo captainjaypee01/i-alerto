@@ -37,7 +37,10 @@ Route::group([
     Route::group(['prefix' => 'evacuation', 'as' => 'evacuation.'], function(){
         Route::get('/barangay/list', 'Custom\CustomEvacuationController@index')->name('barangay.list');
         Route::get('/{evacuation}/userList', 'Custom\CustomEvacuationController@userList')->name('user.list');
+        Route::get('/{evacuation}/unregisterUserList', 'Custom\CustomEvacuationController@unregisterUserList')->name('user.list.unregister');
         Route::post('/{evacuation}/adduser', 'Custom\CustomEvacuationController@addUser')->name('user.add');
+        Route::post('/{evacuation}/addUnregisteredUser', 'Custom\CustomEvacuationController@addUnregisteredUser')->name('user.add.unregistered');
+        Route::post('/{id}/removeunregisterUser', 'Custom\CustomEvacuationController@removeUnregisterUser')->name('user.remove.unregister');
         Route::post('/{user}/removeuser', 'Custom\CustomEvacuationController@removeUser')->name('user.remove');
     });
 

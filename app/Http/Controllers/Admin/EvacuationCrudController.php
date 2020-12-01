@@ -179,7 +179,8 @@ class EvacuationCrudController extends CrudController
         $evacuationUsers = $this->crud->getCurrentEntry()->users;
         $this->data['users'] = $users;
         $this->data['evacuationUsers'] = $evacuationUsers;
-
+        $unregisteredUsers = $this->crud->getCurrentEntry()->unregisterusers;
+        Log::info($unregisteredUsers);
         // set columns from db
         if ($setFromDb) {
             $this->crud->setFromDb();

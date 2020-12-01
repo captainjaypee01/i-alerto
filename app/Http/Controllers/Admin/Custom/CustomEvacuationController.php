@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BackpackUser;
 use App\Models\Barangay;
 use App\Models\Evacuation;
+use App\Models\EvacuationUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Prologue\Alerts\Facades\Alert;
@@ -44,17 +45,49 @@ class CustomEvacuationController extends Controller
     }
 
     public function removeUser(BackpackUser $user){
-        Log::info(request());
-        // Log::info($user);
-        // $user = $user->update(['evacuation_id' => 0]);
         $user->evacuation_id = null;
         $res = $user->save();
         Log::info($user);
         return response()->json($res);
     }
 
+    public function addUnregisteredUser(Evacuation $evacuation){
+
+        $result = EvacuationUser::create([
+            'evacuation_id' => $evacuation->id,
+            'first_name' => request('first_name'),
+            'middle_name' => request('middle_name'),
+            'last_name' => request('last_name'),
+        ]);
+
+        Alert::success('Successfully Added Unregistered User')->flash();
+
+        return redirect()->back();
+    }
+
+    public function unregisterUserList(Evacuation $evacuation){
+        $unregisterdUsers = EvacuationUser::where('evacuation_id', $evacuation->id)->get();
+
+        foreach($unregisterdUsers as $user){
+            $user->full_name = $user->full_name;
+            $user->remove_evacuation_user = $user->remove_evacuation_user;
+        }
+        return response()->json( ['data' => $unregisterdUsers] );
+    }
+
+    public function removeUnregisterUser($id){
+        $user = EvacuationUser::find($id)->delete();
+        Log::info($user);
+        return response()->json($user);
+        // $user->evacuation_id = null;
+        // $res = $user->save();
+        // Log::info($user);
+        // return response()->json($res);
+    }
+
+
     public function userList(Evacuation $evacuation){
-        Log::info($evacuation->users);
+        // Log::info($evacuation->users);
         $users = $evacuation->users;
         foreach($users as $user){
             $user->full_name = $user->full_name;

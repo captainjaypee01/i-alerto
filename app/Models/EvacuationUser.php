@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
-class Evacuation extends Model
+class EvacuationUser extends Model
 {
     use CrudTrait;
 
@@ -16,15 +16,15 @@ class Evacuation extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'evacuations';
+    protected $table = 'evacuation_user';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
-    protected $dates = ['created_at', 'updated_at'];
-    protected $with = ['barangays'];
-    protected $appends = ['date'];
+    // protected $dates = ['created_at', 'updated_at'];
+    // protected $with = ['barangays'];
+    // protected $appends = ['date'];
 
     /*
     |--------------------------------------------------------------------------
@@ -32,32 +32,16 @@ class Evacuation extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getRemoveEvacuationUserAttribute(){
 
-    public function getAvailableStatusAttribute(){
-        Log::info($this->is_avail);
-        $colorBadge = $this->is_avail == 1 ? 'success' : 'danger';
-        $text = $this->is_avail == 1 ? 'Available' : 'Not Available';
-        return '<span class="badge badge-'. $colorBadge . '">' . $text  . '</span>';
+        $btnHtml = '<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-respond text-center" onclick="respondEntry(this)" data-route="'. route('admin.evacuation.user.remove.unregister', $this->id) .'" data-button-type="respond">Remove</a>';
+
+        return $btnHtml . '<br>' ;//.  $script;
     }
 
-    public function getCapacityCountAttribute(){
-        $status = 'success';
-        $userCount = count($this->users);
-        if($userCount >= $this->capacity){
-            $status = 'danger';
-        }
-        $html = '<span class="badge badge-' . $status . '">' . $userCount . ' / ' . $this->capacity . '</span>';
-        return $html;
-    }
-
-    public function getMobileCreatedAtAttribute()
-    {
-        return $this->created_at->format('M d,Y h:i A');
-    }
-
-    public function getDateAttribute()
-    {
-        return $this->getMobileCreatedAtAttribute();
+    public function getFullNameAttribute(){
+        $full_name = $this->last_name . ', '. $this->first_name . ' ' . ( ($this->middle_name == '' || $this->middle_name == null ) ? '' : strtoupper($this->middle_name[0]) . '. ');
+        return ucwords($full_name);
     }
 
     /*
@@ -66,18 +50,6 @@ class Evacuation extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function barangays()
-    {
-        return $this->belongsToMany(Barangay::class, 'barangay_evacuation');
-    }
-
-    public function users(){
-        return $this->hasMany(BackpackUser::class);
-    }
-
-    public function unregisterusers(){
-        return $this->belongsToMany(BackpackUser::class, 'evacuation_user', 'evacuation_id')->withPivot(['first_name', 'middle_name', 'last_name']);
-    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
