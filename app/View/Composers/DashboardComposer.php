@@ -28,20 +28,22 @@ class DashboardComposer
     {
         // $total_alerts = Alert::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count();
         Log::info('test');
-        $month_announcements = Announcement::whereYear('created_at', Carbon::now()->year)->count();
-        $month_users = BackpackUser::whereYear('created_at', Carbon::now()->year)->count();
+        $month = Carbon::now()->month-1;
+        $year = Carbon::now()->year;
+        $month_announcements = Announcement::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
+        $month_users = BackpackUser::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
         $dashboardChart = new DashboardChart();
         $users = BackpackUser::selectRaw('year(created_at) year, month(created_at) month, count(*) total')
-                        ->whereYear('created_at', Carbon::now()->year)
-                        ->groupBy('year', 'month')
-                        ->orderBy('month', 'asc')
-                        ->get(); 
-        $announcements = Announcement::selectRaw('year(created_at) year, month(created_at) month, count(*) total')
-                        ->whereYear('created_at', Carbon::now()->year)
+                        ->whereYear('created_at', $year)
                         ->groupBy('year', 'month')
                         ->orderBy('month', 'asc')
                         ->get();
-        //whereYear('created_at', Carbon::now()->year)->groupBy( DB::raw('Month("created_at")') )->get();//->pluck('count'); 
+        $announcements = Announcement::selectRaw('year(created_at) year, month(created_at) month, count(*) total')
+                        ->whereYear('created_at', $year)
+                        ->groupBy('year', 'month')
+                        ->orderBy('month', 'asc')
+                        ->get();
+        //whereYear('created_at', Carbon::now()->year)->groupBy( DB::raw('Month("created_at")') )->get();//->pluck('count');
         // Log::info($announcements);
 
         $announcement_data = [];
@@ -59,21 +61,21 @@ class DashboardComposer
         }
 
         $dashboardChart->labels($dashboard_labels);
-        $dashboardChart->dataset('Announcement', 'bar', $announcement_data)->color('#900C3F')->backgroundColor('#900C3F'); 
+        $dashboardChart->dataset('Announcement', 'bar', $announcement_data)->color('#900C3F')->backgroundColor('#900C3F');
         $dashboardChart->dataset('Users', 'bar', $user_data)->color('#33C6FF')->backgroundColor('#33C6FF');
         // $alertChart = new DashboardChart();
         // $alert_responded = Alert::selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as entry_date, count(status) as total')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->where('status', 1)->groupBy('entry_date')->get();
         // $alert_no_responded = Alert::selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as entry_date, count(status) as total')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->where('status', 0)->groupBy('entry_date')->get();
 
         // $alerts = Alert::selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as entry_date, count(status) as total')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->groupBy('entry_date')->get();
-        
+
         // $monthYear = Carbon::createFromDate(Carbon::now()->year, Carbon::now()->month, 1);
         // $daysThisMonth = []; // set temp vars
         // $responded_data = [];
         // $no_responded_data = [];
         // $time = [];
         // $currentDate = $monthYear->toDateString();
-        
+
         // for ($i = 1; $i <= $monthYear->daysInMonth; $i++) {
         //     array_push($responded_data, ($offset = $alert_responded->firstWhere('entry_date', $currentDate)) ? $offset->total : null);
         //     array_push($no_responded_data, ($offset = $alert_no_responded->firstWhere('entry_date', $currentDate)) ? $offset->total : null);

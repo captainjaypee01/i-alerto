@@ -26,7 +26,7 @@ class CustomEvacuationController extends Controller
         if (! $form['barangays[]']) {
             return [];
         }
-        $evacuations = Evacuation::whereHas('barangays', function ($query) use ($barangayArray){
+        $evacuations = Evacuation::where('is_avail', 1)->whereHas('barangays', function ($query) use ($barangayArray){
             $query->whereIn('barangay_id', $barangayArray);
         });
 
