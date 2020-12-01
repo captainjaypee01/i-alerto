@@ -28,7 +28,7 @@ class DashboardComposer
     {
         // $total_alerts = Alert::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count();
         Log::info('test');
-        $month = Carbon::now()->month-1;
+        $month = Carbon::now()->month;
         $year = Carbon::now()->year;
         $month_announcements = Announcement::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
         $month_users = BackpackUser::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();

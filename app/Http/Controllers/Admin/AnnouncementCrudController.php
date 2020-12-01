@@ -106,7 +106,7 @@ class AnnouncementCrudController extends CrudController
             'dependencies'         => ['barangays'],
             'include_all_form_fields' => true,
             // 'pivot' => true,
-            // 'select_all' => true,
+            'select_all' => true,
             // 'options'   => (function ($query) {
             //     return $query->where('is_avail', 1)->orderBy('name', 'ASC')->get();
             // }),
