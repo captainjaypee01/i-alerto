@@ -43,10 +43,12 @@ class Evacuation extends Model
     public function getCapacityCountAttribute(){
         $status = 'success';
         $userCount = count($this->users);
-        if($userCount >= $this->capacity){
+        $unregisteredCount = EvacuationUser::where('evacuation_id', $this->id)->count();
+        $totalCount = $userCount + $unregisteredCount;
+        if($totalCount >= $this->capacity){
             $status = 'danger';
         }
-        $html = '<span class="badge badge-' . $status . '">' . $userCount . ' / ' . $this->capacity . '</span>';
+        $html = '<span class="badge badge-' . $status . '">' . $totalCount . ' / ' . $this->capacity . '</span>';
         return $html;
     }
 
