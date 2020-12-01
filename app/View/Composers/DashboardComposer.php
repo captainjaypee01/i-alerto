@@ -61,8 +61,8 @@ class DashboardComposer
         }
 
         $dashboardChart->labels($dashboard_labels);
-        $dashboardChart->dataset('Announcement', 'bar', $announcement_data)->color('#900C3F')->backgroundColor('#900C3F');
-        $dashboardChart->dataset('Users', 'bar', $user_data)->color('#33C6FF')->backgroundColor('#33C6FF');
+        $dashboardChart->dataset('Users', 'bar', $user_data)->color('#2b60ab')->backgroundColor('#2b60ab');
+        $dashboardChart->dataset('Announcement', 'bar', $announcement_data)->color('#2eadd3')->backgroundColor('#2eadd3');
         // $alertChart = new DashboardChart();
         // $alert_responded = Alert::selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as entry_date, count(status) as total')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->where('status', 1)->groupBy('entry_date')->get();
         // $alert_no_responded = Alert::selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as entry_date, count(status) as total')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->where('status', 0)->groupBy('entry_date')->get();
